@@ -68,11 +68,16 @@ Enemy.prototype.render = function() {
 };
 
 
-/* Player class
+/* Player class with x and y coordinates, dx and dy steps and sprite.
+ * Player image is positioned at the bottom of the canvas as the game
+ * starts. Its dx and dy steps are 0 as long as the user doesn't press
+ * any arrow keys.
  */
 var Player = function() {
     this.x = 202;
     this.y = 400;
+    this.dx = 0;
+    this.dy = 0;
     this.sprite = 'images/char-boy.png';
 };
 
@@ -80,6 +85,40 @@ var Player = function() {
  */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/* Handle the player inputs. Each time the user presses an arrow key,
+ * it sets a corresponding step that is used inside the 'update' function
+ * of the player instance to update its position inside the canvas.
+ * Each step corresponds to the width or to the height of a tile, depending
+ * on the fact that the movement is either horizontal or vertical.
+ */
+Player.prototype.handleInput = function(key) {
+    if (key === "left" && this.x > 0) {
+        this.dx = -101;
+    }
+    if (key === "right" && this.x < 354) {
+        this.dx = 101;
+    }
+    if (key === "up" && this.y > 0) {
+        this.dy = -83;
+    }
+    if (key === "down" && this.y < 400) {
+        this.dy = 83;
+    }
+};
+
+/* Update the player position adding the step value. Step values are set to zero
+ * at the beginning of the game. It gets a positive or negative value if the user
+ * presses an arrow key. The step value is set back to zero immediately after
+ * its value has been used to increment or decrement a player coordinate, to take into
+ * account only a step movement for each key press.
+ */
+Player.prototype.update = function() {
+    this.x += this.dx;
+    this.y += this.dy;
+    this.dx = 0;
+    this.dy = 0;
 };
 
 
