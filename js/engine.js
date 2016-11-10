@@ -145,11 +145,15 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
+         * the render function you have defined and a function to determine for each
+         * object if it has exited the canvas.
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
+            enemy.determineIfOut();
         });
+
+        allEnemies.checkNumberOfItems();
 
         //player.render();          //////////////////////////////////////////////////////////////////////////////
     }
