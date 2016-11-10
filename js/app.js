@@ -22,14 +22,6 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 };
 
-/* Get a random integer number between min (included) and max (included)
- */
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 /* Update the enemy's position, required method for game
  * Parameter: dt, a time delta between ticks
  */
@@ -75,9 +67,20 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+
+/* Player class
+ */
+var Player = function() {
+    this.x = 202;
+    this.y = 400;
+    this.sprite = 'images/char-boy.png';
+};
+
+/* Draw the player on the screen, required method for game
+ */
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 
 /* Instantiate the enemy objects.
@@ -86,13 +89,18 @@ Enemy.prototype.render = function() {
  */
 var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 
-// Place the player object in a variable called player
+/* Instantiate the player object
+ */
+var player = new Player();
 
-// for (var i = 0; i < allEnemies.length; i++) {
-//     if (allEnemies[0].x > 600) {
-//         console.log("A");
-//     }
-// }
+
+/* Get a random integer number between min (included) and max (included)
+ */
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 /* Check that the number of items in the array is 3.
  * If the numer is less than 3, add a new enemy to the array.
@@ -103,7 +111,6 @@ Array.prototype.checkNumberOfItems = function() {
         this.push(new Enemy());
     }
 };
-
 
 /* This listens for key presses and sends the keys to your
  * Player.handleInput() method. You don't need to modify this.

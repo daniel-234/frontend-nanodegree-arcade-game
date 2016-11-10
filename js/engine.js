@@ -155,7 +155,7 @@ var Engine = (function(global) {
 
         allEnemies.checkNumberOfItems();
 
-        //player.render();          //////////////////////////////////////////////////////////////////////////////
+        player.render();          //////////////////////////////////////////////////////////////////////////////
     }
 
     /* This function does nothing but it could have been a good place to
