@@ -25,3 +25,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * I used some lines of code from this answer in Stackoverflow to avoid image flickering as the enemy sprites moved along the canvas
   [Image flickering in canvas](http://stackoverflow.com/questions/19619512/image-flickering-in-canvas)
+* Thanks to this answer on Stackoverflow I have been able to stop the game execution when a specific event occurs (in my case the player either win or lose) - [Can't stop requestAnimationFrame Javascript/HTML5 canvas](http://stackoverflow.com/questions/19449219/cant-stop-requestanimationframe-javascript-html5-canvas)
