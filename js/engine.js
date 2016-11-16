@@ -23,7 +23,8 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        active = true;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -60,7 +61,12 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+         if (active) {
+            win.requestAnimationFrame(main);
+         } else {
+            renderIfWon();
+         }
+
     }
 
     /* This function does some initial setup that should only occur once,
@@ -108,7 +114,20 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render() {
+    function renderIfWon() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        /* Render the game level scenario
+         */
+        drawGameScene();
+        ctx.font = "58px serif";
+        ctx.fillText("Game Over", 122, 352);
+        //player.render();
+        //renderEntities();
+    }
+
+    /* Draw the game level scene (the static scenario) in canvas.
+     */
+    function drawGameScene() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -140,7 +159,21 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
+    }
 
+
+    /* This function initially draws the "game level", it will then call
+     * the renderEntities function. Remember, this function is called every
+     * game tick (or loop of the game engine) because that's how games work -
+     * they are flipbooks creating the illusion of animation but in reality
+     * they are just drawing the entire screen over and over.
+     */
+    function render() {
+        /* Render the game level scenario
+         */
+        drawGameScene();
+        /* Render the game entities (player and enemies)
+         */
         renderEntities();
     }
 
@@ -174,14 +207,17 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-        player.checkIfWon();
+        if (player.checkIfWon()) {
+            active = false;
+        }
+        //player.checkIfWon();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
-    Resources.load([
+    var imagesA = Resources.load([
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',

@@ -15,8 +15,8 @@ var Enemy = function() {
     // Get a random speed for each enemy instance
     var dxStep = horizontalSteps[getRandomInt(0, 3)];
     this.dx = dxStep
-    console.log("Vertical pos: " + verticalPos);
-    console.log("Horizontal step: " + dxStep);
+    //console.log("Vertical pos: " + verticalPos);
+    //console.log("Horizontal step: " + dxStep);
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -156,10 +156,11 @@ Player.prototype.update = function() {
 Player.prototype.checkIfWon = function() {
     if (this.y < 0) {
         //this.y = 400;
-        document.location.reload();
+        //document.location.reload();
         // setTimeout( function() {
         //     document.location.reload();
         // }, 0);
+        return true;
     }
 };
 
