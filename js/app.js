@@ -100,12 +100,37 @@ Player.prototype.handleInput = function(key) {
     if (key === "right" && this.x < 354) {
         this.dx = 101;
     }
-    if (key === "up" && this.y > 0) {
-        this.dy = -83;
-    }
     if (key === "down" && this.y < 400) {
         this.dy = 83;
     }
+    if (key === "up" && this.y > 0) {
+        this.dy = -83
+    }
+
+
+
+    // if (key === "up") {
+    //     if (this.y > 83) {
+    //         this.dy = -83;
+    //         setTimeout(function() {
+    //             this.y = 400;
+    //         }, 2000);
+
+    //     }
+    //     else {
+    //         this.dy = -83
+    //     }
+    // }
+
+
+    // && this.y > 83) {
+    //     this.dy = -83
+    // }
+    // else {
+    //     if (this.y < 50) {
+    //         console.log("A");
+    //     };
+    // }
 };
 
 /* Update the player position adding the step value. Step values are set to zero
@@ -115,10 +140,27 @@ Player.prototype.handleInput = function(key) {
  * account only a step movement for each key press.
  */
 Player.prototype.update = function() {
-    this.x += this.dx;
-    this.y += this.dy;
-    this.dx = 0;
-    this.dy = 0;
+    // if (this.y < 0) {
+    //     this.y = 400;
+    // }
+    //else {
+        this.x += this.dx;
+        this.y += this.dy;
+        this.dx = 0;
+        this.dy = 0;
+    //}
+
+    //console.log("Player pos: " + this.y);
+};
+
+Player.prototype.checkIfWon = function() {
+    if (this.y < 0) {
+        //this.y = 400;
+        document.location.reload();
+        // setTimeout( function() {
+        //     document.location.reload();
+        // }, 0);
+    }
 };
 
 

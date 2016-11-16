@@ -42,11 +42,15 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
+        /* Check if the game is in a state that needs a reset.
+         */
+        reset();
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
         update(dt);
         render();
+
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -95,7 +99,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();       /////////////////////////////////////////////////////////////////////////////////////////
-        //player.handleInput();
+        //player.checkIfWon();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -163,8 +167,14 @@ var Engine = (function(global) {
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
+
+    /* Check if the game is in a state that needs a reset.
+     * It calls the function 'checkIfWon()' that has been defined for the player to see if
+     * it has reached the water without touching any enemy bug.
+     */
     function reset() {
         // noop
+        player.checkIfWon();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
