@@ -164,6 +164,10 @@ Player.prototype.checkIfWon = function() {
     }
 };
 
+Player.prototype.startAgain = function() {
+    player = new Player();
+};
+
 
 /* Instantiate the enemy objects.
  * Place all enemy objects in an array called allEnemies.
@@ -204,6 +208,8 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
+
+    //console.log(allowedKeys[e.keyCode]);
 
     player.handleInput(allowedKeys[e.keyCode]);
 });

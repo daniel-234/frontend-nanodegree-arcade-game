@@ -24,7 +24,8 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
-        active = true;
+        // True when user is playing game, false otherwise
+        active = false;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -34,103 +35,118 @@ var Engine = (function(global) {
      * and handles properly calling the update and render methods.
      */
     function main() {
-        /* Get our time delta information which is required if your game
-         * requires smooth animation. Because everyone's computer processes
-         * instructions at different speeds we need a constant value that
-         * would be the same for everyone (regardless of how fast their
-         * computer is) - hurray time!
-         */
+        // Get our time delta information which is required if your game requires smooth animation. Because everyone's computer processes
+        // instructions at different speeds we need a constant value that would be the same for everyone (regardless of how fast their
+        // computer is) - hurray time!
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
-        /* Check if the game is in a state that needs a reset.
-         */
+        // Check if the game is in a state that needs a reset.
         reset();
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         */
+        // Call our update/render functions, pass along the time delta to our update function since it may be used for smooth animation.
         update(dt);
         render();
 
 
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
+        // Set our lastTime variable which is used to determine the time delta for the next time this function is called.
         lastTime = now;
 
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-         if (active) {
+        // If the flag variable active is true, use the browser's requestAnimationFrame function
+        // to call this function again as soon as the browser is able to draw another frame.
+        // If the flag variable is false, draw the Game Over screen.
+        if (active) {
             win.requestAnimationFrame(main);
-         } else {
-            renderIfWon();
-         }
+        } else {
+            renderAtGameOver();
+        }
+
+
+        // if (active) {
+        //     win.requestAnimationFrame(main);
+        // } else {
+        //     renderAtStart();
+        // }
 
     }
 
-    /* This function does some initial setup that should only occur once,
-     * particularly setting the lastTime variable that is required for the
-     * game loop.
+    /* Draw the start screen the first time the game is loaded by the user.
      */
     function init() {
-        reset();
-        lastTime = Date.now();
-        main();
-    }
-
-    /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
-     */
-    function update(dt) {
-        updateEntities(dt);
-        // checkCollisions();
-    }
-
-    /* This is called by the update function and loops through all of the
-     * objects within your allEnemies array as defined in app.js and calls
-     * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to the object. Do your drawing in your
-     * render methods.
-     */
-    function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
-        player.update();       /////////////////////////////////////////////////////////////////////////////////////////
-        //player.checkIfWon();
-    }
-
-    /* This function initially draws the "game level", it will then call
-     * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
-     */
-    function renderIfWon() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        /* Render the game level scenario
-         */
         drawGameScene();
-        ctx.font = "58px serif";
-        ctx.fillText("Game Over", 122, 352);
+        ctx.font = "36pt Impact";
+        ctx.fillText("Start Game", 145, 352);
         //player.render();
         //renderEntities();
     }
 
-    /* Draw the game level scene (the static scenario) in canvas.
+
+
+
+    /* Call a function to draw the initial screen, that appears only the first time the game is loaded.
+     */
+    //function init() {
+        //
+        //reset();
+        //renderAtStart();
+        //lastTime = Date.now();
+        //main();
+    //}
+
+
+
+
+
+    /* Set the flag variables to true to start the game.
+     */
+    function playGame() {
+        active = true;
+        //
+        //firstStart = false;
+        //
+        //reset();
+        //renderAtStart();
+        // Set the lastTime variable that is required for the game loop.
+        lastTime = Date.now();
+        // Call the game loop function
+        main();
+    }
+
+
+
+    //
+    /* Draw the start screen the first time the game is loaded by the user.
+     */
+    //function renderAtStart() {
+    //    drawGameScene();
+    //    ctx.font = "36pt Impact";
+    //    ctx.fillText("Start Game", 145, 352);
+        //player.render();
+        //renderEntities();
+    //}
+    //
+
+
+    /* Draw the screen to Start Again after Game Over.
+     */
+    function renderAtGameOver() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGameScene();
+        ctx.font = "50pt Impact";
+        ctx.fillText("Game Over", 105, 262);
+        ctx.font = "36pt Impact";
+        ctx.fillText("Start Again", 140, 352);
+        player.startAgain();
+        //renderEntities();
+    }
+
+    /* TODO
+     * Draw the screen to Start Again after victory.
+     */
+
+    /* Draw the game scenario (water, stone and grass tiles) in canvas.
      */
     function drawGameScene() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
+        // This array holds the relative URL to the image used for that particular row of the game level
         var rowImages = [
                 'images/water-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
@@ -143,80 +159,96 @@ var Engine = (function(global) {
             numCols = 5,
             row, col;
 
-        /* Loop through the number of rows and columns we've defined above
-         * and, using the rowImages array, draw the correct image for that
-         * portion of the "grid"
-         */
+        // Loop through the number of rows and columns we've defined above and, using the rowImages array,
+        // draw the correct image for that portion of the "grid"
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
-                /* The drawImage function of the canvas' context element
-                 * requires 3 parameters: the image to draw, the x coordinate
-                 * to start drawing and the y coordinate to start drawing.
-                 * We're using our Resources helpers to refer to our images
-                 * so that we get the benefits of caching these images, since
-                 * we're using them over and over.
-                 */
+                // The drawImage function of the canvas' context element requires 3 parameters: the image to draw,
+                // the x coordinate to start drawing and the y coordinate to start drawing.
+                // We're using our Resources helpers to refer to our images so that we get the benefits of caching
+                // these images, since we're using them over and over.
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
     }
 
 
-    /* This function initially draws the "game level", it will then call
-     * the renderEntities function. Remember, this function is called every
-     * game tick (or loop of the game engine) because that's how games work -
-     * they are flipbooks creating the illusion of animation but in reality
-     * they are just drawing the entire screen over and over.
+    /* Draw the "game level" and then call the renderEntities function.
      */
     function render() {
-        /* Render the game level scenario
-         */
+        // Render the game level scenario
         drawGameScene();
-        /* Render the game entities (player and enemies)
-         */
+        // Render the game entities (player and enemies)
         renderEntities();
     }
 
-    /* This function is called by the render function and is called on each game
-     * tick. Its purpose is to then call the render functions you have defined
-     * on your enemy and player entities within app.js
+    /* Call the render functions you have defined on your enemy and player entities within app.js.
+     * This function is called by the render function and is called on each game tick.
      */
     function renderEntities() {
-        /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined and a function to determine for each
-         * object if it has exited the canvas.
-         */
+        // Loop through all of the objects within the allEnemies array and call the render function you have defined
+        // and a function to determine for each enemy if it has exited the canvas.
         allEnemies.forEach(function(enemy) {
             enemy.render();
             enemy.determineIfOut();
         });
-
+        // If there are less than 3 enemies in the array, insert a new one.
         allEnemies.checkNumberOfItems();
-
-        player.render();          //////////////////////////////////////////////////////////////////////////////
+        player.render();
     }
 
+
+    /* Call all of the functions which may need to update entity's data.
+     * This function is called by main (our game loop) and itself calls all of the functions which may need
+     * to update entity's data.
+     */
+    function update(dt) {
+        updateEntities(dt);
+        // checkCollisions();
+    }
+
+    /* Update the data/properties related to the game objects (enemies inside the array and player).
+     * This is called by the update function and loops through all of the objects within your allEnemies
+     * array as defined in app.js and calls their update() methods. It will then call the update function
+     * for your player object.
+     * These update methods should focus purely on updating the data/properties related to the object.
+     * Do your drawing in your render methods.
+     */
+    function updateEntities(dt) {
+        allEnemies.forEach(function(enemy) {
+            enemy.update(dt);
+        });
+        player.update();
+        //
+        //player.checkIfWon();
+    }
+
+
+    //
+    //
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
+     //
 
-    /* Check if the game is in a state that needs a reset.
-     * It calls the function 'checkIfWon()' that has been defined for the player to see if
-     * it has reached the water without touching any enemy bug.
+
+
+    /* Check if the game is in a state that needs a reset. In that case, call the function 'checkIfWon()'
+     * that has been defined for the player to see if it has reached the water without touching any enemy bug.
      */
     function reset() {
-        // noop
         if (player.checkIfWon()) {
             active = false;
         }
+
+        //
         //player.checkIfWon();
     }
 
-    /* Go ahead and load all of the images we know we're going to need to
-     * draw our game level. Then set init as the callback method, so that when
-     * all of these images are properly loaded our game will start.
-     */
+    // Load all of the images we know we're going to need to draw our game level.
+    // Then set init as the callback method, so that when all of these images are properly loaded
+    // our game will start.
     var imagesA = Resources.load([
         'images/stone-block.png',
         'images/water-block.png',
@@ -224,11 +256,39 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png'
     ]);
-    Resources.onReady(init);
+    Resources.onReady(init);      //init);
 
-    /* Assign the canvas' context object to the global variable (the window
-     * object when run in a browser) so that developers can use it more easily
-     * from within their app.js files.
+    /* Listen for a click of the mouse. If the user clicks the "Start Game" text inside
+     * canvas, the function playGame is called and the game starts.
      */
+    canvas.addEventListener('click', function(mouseE) {
+        // Assign to mouseX and mouseY the x and y coordinates inside the canvas element
+        // of the point that has been clicked by the mouse.
+        var mouseX = mouseE.x;
+        var mouseY = mouseE.y;
+        // Return the offset in pixels of the point that has been clicked from the canvas left border.
+        mouseX -= canvas.offsetLeft;
+        // Return the offset in pixels of the point that has been clicked from the canvas top border.
+        mouseY -= canvas.offsetTop;
+        // Check if the x and y mouse coordinates are inside the text "Start Game"
+        if (mouseX > 145 && mouseX < 360) {
+            if (mouseY > 312 && mouseY < 350) {
+                //
+                //console.log("Start!");
+
+                // If the user clicks the text, start the game
+                playGame();
+            }
+        }
+
+        //
+        // console.log("x: " + mouseX + ", y: " + mouseY);
+
+        //player.handleInput(allowedKeys[e.keyCode]);
+    });
+
+
+    // Assign the canvas' context object to the global variable (the window object when run in a browser)
+    // so that developers can use it more easily from within their app.js files.
     global.ctx = ctx;
 })(this);
