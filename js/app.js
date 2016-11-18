@@ -2,23 +2,27 @@
 var verticalCoordinate = [60, 143, 226];
 // Array to hold all the possible values for horizontal speed of enemies
 var horizontalSteps = [120, 240, 360, 480];
+// Real dimensions of images in the images folder
 
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
     // Starting horizontal position of enemies is out of canvas on the left
     this.x = -101;
-    // Get a random vertical position for each enemy instance
+    // Get a random vertical position for each enemy instance inside the stone path
     var verticalPos = verticalCoordinate[getRandomInt(0, 2)]
+    // Starting vertical coordinate of an enemy object
     this.y = verticalPos;
     // Get a random speed for each enemy instance
     var dxStep = horizontalSteps[getRandomInt(0, 3)];
     this.dx = dxStep
     //console.log("Vertical pos: " + verticalPos);
     //console.log("Horizontal step: " + dxStep);
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // Width and height correspond to the enemy sprite real dimensions
+    this.xOffset = 25;
+    this.yOffset = 40;
+    this.effectiveWidth = 50;
+    this.effectiveHeight = 60;
+    // The image/sprite for our enemies, this uses a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -78,6 +82,10 @@ var Player = function() {
     this.y = 400;
     this.dx = 0;
     this.dy = 0;
+    this.xOffset = 2;
+    this.yOffset = 40;
+    this.effectiveWidth = 96;
+    this.effectiveHeight = 45;
     this.sprite = 'images/char-boy.png';
 };
 
@@ -166,6 +174,17 @@ Player.prototype.checkIfWon = function() {
 
 Player.prototype.startAgain = function() {
     player = new Player();
+};
+
+Player.prototype.checkCollision = function(obj) {
+    if (this.x + this.xOffset < obj.x + obj.xOffset + obj.effectiveWidth &&
+        this.x + this.xOffset + this.effectiveWidth > obj.x + obj.xOffset &&
+        this.y + this.yOffset < obj.y + obj.yOffset + obj.effectiveHeight &&
+        this.y + this.yOffset + this.effectiveHeight > obj.y + this.yOffset) {
+        return true;
+
+        //console.log("BUMP");
+    }
 };
 
 

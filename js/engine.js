@@ -24,7 +24,7 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime,
-        // True when user is playing game, false otherwise
+        // Flag variable set to true when user is playing the game, false otherwise
         active = false;
 
     canvas.width = 505;
@@ -41,8 +41,13 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
+        //
+        //
         // Check if the game is in a state that needs a reset.
-        reset();
+        //reset();
+        //
+
+
         // Call our update/render functions, pass along the time delta to our update function since it may be used for smooth animation.
         update(dt);
         render();
@@ -204,23 +209,39 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* Update the data/properties related to the game objects (enemies inside the array and player).
-     * This is called by the update function and loops through all of the objects within your allEnemies
-     * array as defined in app.js and calls their update() methods. It will then call the update function
-     * for your player object.
+     * This is called by the update function and as first thing it checks if the player has won by reaching the water.
+     * Then it loops through all of the objects within your allEnemies array as defined in app.js
+     * and calls their update() methods. It will then call the update function for your player object.
      * These update methods should focus purely on updating the data/properties related to the object.
      * Do your drawing in your render methods.
      */
     function updateEntities(dt) {
+        if (player.checkIfWon()) {
+            reset();
+        }
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
         player.update();
         //
         //player.checkIfWon();
+
+    }
+
+
+    function checkCollisions() {
+        allEnemies.forEach(function(enemy) {
+            if (player.checkCollision(enemy)) {
+                reset();
+            }
+        });
+        //
+        //player.checkIfWon();
+
     }
 
 
@@ -234,29 +255,20 @@ var Engine = (function(global) {
 
 
 
-    /* Check if the game is in a state that needs a reset. In that case, call the function 'checkIfWon()'
-     * that has been defined for the player to see if it has reached the water without touching any enemy bug.
+    /* Set the flag variable active to false so it stops the game from looping until the user decides
+     * to start it again.
      */
     function reset() {
-        if (player.checkIfWon()) {
-            active = false;
-        }
+        // if (player.checkIfWon()) {
+        //     active = false;
+        // }
+        active = false;
 
         //
         //player.checkIfWon();
     }
 
-    // Load all of the images we know we're going to need to draw our game level.
-    // Then set init as the callback method, so that when all of these images are properly loaded
-    // our game will start.
-    var imagesA = Resources.load([
-        'images/stone-block.png',
-        'images/water-block.png',
-        'images/grass-block.png',
-        'images/enemy-bug.png',
-        'images/char-boy.png'
-    ]);
-    Resources.onReady(init);      //init);
+
 
     /* Listen for a click of the mouse. If the user clicks the "Start Game" text inside
      * canvas, the function playGame is called and the game starts.
@@ -286,6 +298,18 @@ var Engine = (function(global) {
 
         //player.handleInput(allowedKeys[e.keyCode]);
     });
+
+    // Load all of the images we know we're going to need to draw our game level.
+    // Then set init as the callback method, so that when all of these images are properly loaded
+    // our game will start.
+    var imagesA = Resources.load([
+        'images/stone-block.png',
+        'images/water-block.png',
+        'images/grass-block.png',
+        'images/enemy-bug.png',
+        'images/char-boy.png'
+    ]);
+    Resources.onReady(init);      //init);
 
 
     // Assign the canvas' context object to the global variable (the window object when run in a browser)
