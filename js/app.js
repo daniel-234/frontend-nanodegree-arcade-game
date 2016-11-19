@@ -4,7 +4,12 @@ var verticalCoordinate = [60, 143, 226];
 var horizontalSteps = [120, 240, 360, 480];
 // Real dimensions of images in the images folder
 
-// Enemies our player must avoid
+/* Enemies our player must avoid.
+ * Each enemy has an x and y coordinate to place its sprite; an x and y offset
+ * to detect the exact position of the image inside the sprite; an effective
+ * width and height for the image inside the sprite and a sprit property to
+ * locate the image inside the images folder.
+ */
 var Enemy = function() {
     // Starting horizontal position of enemies is out of canvas on the left
     this.x = -101;
@@ -17,10 +22,14 @@ var Enemy = function() {
     this.dx = dxStep
     //console.log("Vertical pos: " + verticalPos);
     //console.log("Horizontal step: " + dxStep);
-    // Width and height correspond to the enemy sprite real dimensions
+
+    // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 25;
+    // Offset of the effective image from the y position, necessary to detect collision
     this.yOffset = 40;
+    // Effective width of the image, necessary to detect collision
     this.effectiveWidth = 50;
+    // Effective height of the image, necessary to detect collision
     this.effectiveHeight = 60;
     // The image/sprite for our enemies, this uses a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -30,9 +39,9 @@ var Enemy = function() {
  * Parameter: dt, a time delta between ticks
  */
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    // You should multiply any movement by the dt parameter which will ensure
+    // the game runs at the same speed for all computers.
+    // The enemy moves until it is completely out of canvas.
     if (this.x <= 610) {
         this.x += this.dx * dt;
     }
@@ -46,9 +55,6 @@ Enemy.prototype.update = function(dt) {
 /* Determine if an instance of Enemy is gone outside of canvas (canvas width
  * is 606px). When it happens, take its index and remove that item from the
  * array by index position .
- *
- * Use setTimeout to avoid flickering of enemy sprites (see answer in Stackoverflow:
- * http://stackoverflow.com/questions/19619512/image-flickering-in-canvas).
  */
 Enemy.prototype.determineIfOut = function() {
     if (this.x > 610) {
@@ -59,6 +65,7 @@ Enemy.prototype.determineIfOut = function() {
         //allEnemies.push(new Enemy());
         //allEnemies.splice(pos, 1);
 
+        // Use setTimeout to avoid flickering of enemy sprites.
         setTimeout( function() {
             allEnemies.splice(pos, 1);
         }, 0);
@@ -72,19 +79,26 @@ Enemy.prototype.render = function() {
 };
 
 
-/* Player class with x and y coordinates, dx and dy steps and sprite.
- * Player image is positioned at the bottom of the canvas as the game
- * starts. Its dx and dy steps are 0 as long as the user doesn't press
- * any arrow keys.
+/* Player class with x and y coordinates, x and y offset, width and height, dx
+ * and dy steps and sprite.
+ * Player image is positioned at the bottom of the canvas as the game starts.
+ * Its dx and dy steps are 0 as long as the user doesn't press any arrow keys.
+ * The x and y offset are used to detect the exact position of the image inside
+ * the sprite; an effective width and height for the image inside the sprite
+ * and a sprit property to locate the image inside the images folder.
  */
 var Player = function() {
     this.x = 202;
     this.y = 400;
     this.dx = 0;
     this.dy = 0;
+    // Offset of the effective image from the x position
     this.xOffset = 2;
+    // Offset of the effective image from the y position
     this.yOffset = 40;
+    // Effective width of the image; necessary to detect collision
     this.effectiveWidth = 96;
+    // Effective height of the image; necessary to detect collision
     this.effectiveHeight = 45;
     this.sprite = 'images/char-boy.png';
 };
@@ -161,6 +175,8 @@ Player.prototype.update = function() {
     //console.log("Player pos: " + this.y);
 };
 
+/* Determnine if the player has reached the water safely.
+ */
 Player.prototype.checkIfWon = function() {
     if (this.y < 0) {
         //this.y = 400;
@@ -172,10 +188,15 @@ Player.prototype.checkIfWon = function() {
     }
 };
 
+/* After the game ended, if the user starts a new game,assign a new Player object to player
+ */
 Player.prototype.startAgain = function() {
     player = new Player();
 };
 
+/* Check that there is no gap between the player and another object. If this condition is met,
+ * there is a collision.
+ */
 Player.prototype.checkCollision = function(obj) {
     if (this.x + this.xOffset < obj.x + obj.xOffset + obj.effectiveWidth &&
         this.x + this.xOffset + this.effectiveWidth > obj.x + obj.xOffset &&
@@ -194,7 +215,7 @@ Player.prototype.checkCollision = function(obj) {
  */
 var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 
-/* Instantiate the player object
+/* Instantiate the player object. There is only one player per game.
  */
 var player = new Player();
 

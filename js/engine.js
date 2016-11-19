@@ -35,9 +35,10 @@ var Engine = (function(global) {
      * and handles properly calling the update and render methods.
      */
     function main() {
-        // Get our time delta information which is required if your game requires smooth animation. Because everyone's computer processes
-        // instructions at different speeds we need a constant value that would be the same for everyone (regardless of how fast their
-        // computer is) - hurray time!
+        // Get our time delta information which is required if your game requires
+        // smooth animation. Because everyone's computer processes instructions at
+        // different speeds we need a constant value that would be the same for
+        // everyone (regardless of how fast their computer is) - hurray time!
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 
@@ -48,12 +49,14 @@ var Engine = (function(global) {
         //
 
 
-        // Call our update/render functions, pass along the time delta to our update function since it may be used for smooth animation.
+        // Call our update/render functions, pass along the time delta to our
+        // update function since it may be used for smooth animation.
         update(dt);
         render();
 
 
-        // Set our lastTime variable which is used to determine the time delta for the next time this function is called.
+        // Set our lastTime variable which is used to determine the time delta for the next
+        // time this function is called.
         lastTime = now;
 
         // If the flag variable active is true, use the browser's requestAnimationFrame function
@@ -74,7 +77,7 @@ var Engine = (function(global) {
 
     }
 
-    /* Draw the start screen the first time the game is loaded by the user.
+    /* Draw the start screen the first time the game is loaded.
      */
     function init() {
         drawGameScene();
@@ -101,15 +104,20 @@ var Engine = (function(global) {
 
 
 
-    /* Set the flag variables to true to start the game.
+    /* Set the conditions for the game to start and call its main function.
      */
     function playGame() {
+        // Set the active flag variable to true to start the game
         active = true;
+
+
         //
         //firstStart = false;
         //
         //reset();
         //renderAtStart();
+
+
         // Set the lastTime variable that is required for the game loop.
         lastTime = Date.now();
         // Call the game loop function
@@ -148,10 +156,13 @@ var Engine = (function(global) {
      * Draw the screen to Start Again after victory.
      */
 
+
+
     /* Draw the game scenario (water, stone and grass tiles) in canvas.
      */
     function drawGameScene() {
-        // This array holds the relative URL to the image used for that particular row of the game level
+        // This array holds the relative URL to the image used for that
+        // particular row of the game level
         var rowImages = [
                 'images/water-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
@@ -164,14 +175,17 @@ var Engine = (function(global) {
             numCols = 5,
             row, col;
 
-        // Loop through the number of rows and columns we've defined above and, using the rowImages array,
-        // draw the correct image for that portion of the "grid"
+        // Loop through the number of rows and columns we've defined above
+        // and, using the rowImages array, draw the correct image for that
+        // portion of the "grid"
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
-                // The drawImage function of the canvas' context element requires 3 parameters: the image to draw,
-                // the x coordinate to start drawing and the y coordinate to start drawing.
-                // We're using our Resources helpers to refer to our images so that we get the benefits of caching
-                // these images, since we're using them over and over.
+                // The drawImage function of the canvas' context element
+                // requires 3 parameters: the image to draw, the x coordinate
+                // to start drawing and the y coordinate to start drawing.
+                // We're using our Resources helpers to refer to our images
+                // so that we get the benefits of caching these images, since
+                // we're using them over and over.
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
@@ -187,37 +201,42 @@ var Engine = (function(global) {
         renderEntities();
     }
 
-    /* Call the render functions you have defined on your enemy and player entities within app.js.
+    /* Call the render functions you have defined on your enemy and player
+     * entities within app.js.
      * This function is called by the render function and is called on each game tick.
      */
     function renderEntities() {
-        // Loop through all of the objects within the allEnemies array and call the render function you have defined
-        // and a function to determine for each enemy if it has exited the canvas.
+        // Loop through all of the objects within the allEnemies array and call the
+        // render function you have defined and a function to determine for each
+        // enemy if it has exited the canvas.
         allEnemies.forEach(function(enemy) {
             enemy.render();
             enemy.determineIfOut();
         });
-        // If there are less than 3 enemies in the array, insert a new one.
+        // If there are less than 3 enemies in the array, insert a new one
         allEnemies.checkNumberOfItems();
         player.render();
     }
 
 
     /* Call all of the functions which may need to update entity's data.
-     * This function is called by main (our game loop) and itself calls all of the functions which may need
-     * to update entity's data.
+     * This function is called by main (our game loop) and itself calls all
+     * of the functions which may need to update entity's data.
      */
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
     }
 
-    /* Update the data/properties related to the game objects (enemies inside the array and player).
-     * This is called by the update function and as first thing it checks if the player has won by reaching the water.
-     * Then it loops through all of the objects within your allEnemies array as defined in app.js
-     * and calls their update() methods. It will then call the update function for your player object.
-     * These update methods should focus purely on updating the data/properties related to the object.
-     * Do your drawing in your render methods.
+    /* Update the data/properties related to the game objects (enemies
+     * inside the array and player).
+     * This is called by the update function and as first thing it checks
+     * if the player has won by reaching the water. Then it loops through
+     * all of the objects within your allEnemies array as defined in app.js
+     * and calls their update() methods. It will then call the update function
+     * for your player object.
+     * These update methods should focus purely on updating the data/properties
+     * related to the object. Do your drawing in your render methods.
      */
     function updateEntities(dt) {
         if (player.checkIfWon()) {
@@ -227,22 +246,29 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+
+
         //
         //player.checkIfWon();
 
     }
 
 
+    /* Check if there is a collision. If any is detected, reset the game.
+     */
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
             if (player.checkCollision(enemy)) {
                 reset();
             }
         });
+
+
         //
         //player.checkIfWon();
 
     }
+
 
 
     //
@@ -255,13 +281,17 @@ var Engine = (function(global) {
 
 
 
-    /* Set the flag variable active to false so it stops the game from looping until the user decides
-     * to start it again.
+
+
+    /* Set the flag variable active to false so it stops the game from looping
+     * until the user decides to start it again.
      */
     function reset() {
+
         // if (player.checkIfWon()) {
         //     active = false;
         // }
+
         active = false;
 
         //
@@ -285,6 +315,7 @@ var Engine = (function(global) {
         // Check if the x and y mouse coordinates are inside the text "Start Game"
         if (mouseX > 145 && mouseX < 360) {
             if (mouseY > 312 && mouseY < 350) {
+
                 //
                 //console.log("Start!");
 
@@ -293,11 +324,14 @@ var Engine = (function(global) {
             }
         }
 
+
         //
         // console.log("x: " + mouseX + ", y: " + mouseY);
 
         //player.handleInput(allowedKeys[e.keyCode]);
+
     });
+
 
     // Load all of the images we know we're going to need to draw our game level.
     // Then set init as the callback method, so that when all of these images are properly loaded
