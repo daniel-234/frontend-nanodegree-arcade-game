@@ -300,26 +300,37 @@ var Engine = (function(global) {
 
 
 
+    /* Listen for user actions
+     */
+    canvas.addEventListener('click', clickOnStart, false);
+    canvas.addEventListener("touchstart", touchOnStart, false);
+    canvas.addEventListener("mousedown", mouseDown, false);
+    canvas.addEventListener("touchstart", touchDown, false);
+
     /* Listen for a click of the mouse. If the user clicks the "Start Game" text inside
      * canvas, the function playGame is called and the game starts.
      */
-    canvas.addEventListener('click', function(mouseE) {
-        // Assign to mouseX and mouseY the x and y coordinates inside the canvas element
-        // of the point that has been clicked by the mouse.
-        var mouseX = mouseE.x;
-        var mouseY = mouseE.y;
-        // Return the offset in pixels of the point that has been clicked from the canvas left border.
-        mouseX -= canvas.offsetLeft;
-        // Return the offset in pixels of the point that has been clicked from the canvas top border.
-        mouseY -= canvas.offsetTop;
+    function clickOnStart(e) {
+        if(!e) {
+            e = event;
+        }
+        e.preventDefault();
+        // Assign to clickOnStartX and clickOnStartY the x and y coordinates
+        // inside the canvas parent element, that is body.
+        // To get the x and y coordinates of the click event relative to the canvas,
+        // we need to consider that the canvas element has an offset from its
+        // parent element. To take that into account, subtract the left and top
+        // canvas offsets from the x and y coordinates registered inside the body.
+        var clickOnStartX = e.pageX - canvas.offsetLeft;
+        var clickOnStartY = e.pageY - canvas.offsetTop;
         // Check if the x and y mouse coordinates are inside the text "Start Game"
-        if (mouseX > 145 && mouseX < 360) {
-            if (mouseY > 312 && mouseY < 350) {
+        if (clickOnStartX > 145 && clickOnStartX < 360) {
+            if (clickOnStartY > 312 && clickOnStartY < 350) {
 
                 //
                 //console.log("Start!");
 
-                // If the user clicks the text, start the game
+                // If the user clicks inside the text, start the game
                 playGame();
             }
         }
@@ -330,7 +341,172 @@ var Engine = (function(global) {
 
         //player.handleInput(allowedKeys[e.keyCode]);
 
-    });
+    }
+
+
+    /* Listen for a touch. If the user touches the "Start Game" text inside
+     * canvas, the function playGame is called and the game starts.
+     */
+    function touchOnStart(e) {
+        if(!e) {
+            e = event;
+        }
+        e.preventDefault();
+        // Assign to clickOnStartX and clickOnStartY the x and y coordinates
+        // inside the canvas parent element, that is body.
+        // To get the x and y coordinates of the click event relative to the canvas,
+        // we need to consider that the canvas element has an offset from its
+        // parent element. To take that into account, subtract the left and top
+        // canvas offsets from the x and y coordinates registered inside the body.
+        var clickOnStartX = e.targetTouches[0].pageX - canvas.offsetLeft;
+        var clickOnStartY = e.targetTouches[0].pageY - canvas.offsetTop;
+        // Check if the x and y mouse coordinates are inside the text "Start Game"
+        if (clickOnStartX > 145 && clickOnStartX < 360) {
+            if (clickOnStartY > 312 && clickOnStartY < 350) {
+
+                //
+                //console.log("Start!");
+
+                // If the user clicks inside the text, start the game
+                playGame();
+            }
+        }
+
+
+        //
+        // console.log("x: " + mouseX + ", y: " + mouseY);
+
+        //player.handleInput(allowedKeys[e.keyCode]);
+
+    }
+
+
+
+    /* Listen for a click of the mouse to move the player. When the user
+     * clicks on the game field inside the canvas, the function detects
+     * its distance from the player and decides which of the four main
+     * directions has the greater distance from the player center.
+     * If the point is midway between two directions (like NW), it computes
+     * the distance between it and the player and evaluates which coordinate
+     * is farther from the player image center.
+     */
+    function mouseDown(e) {
+        if(!e) {
+            e = event;
+        }
+        e.preventDefault();
+        // Assign to clickOnStartX and clickOnStartY the x and y coordinates
+        // inside the canvas parent element, that is body.
+        // To get the x and y coordinates of the click event relative to the canvas,
+        // we need to consider that the canvas element has an offset from its
+        // parent element. To take that into account, subtract the left and top
+        // canvas offsets from the x and y coordinates registered inside the body.
+        var mouseX = e.pageX - canvas.offsetLeft;
+        var mouseY = e.pageY - canvas.offsetTop;
+
+        //console.log("x: " + mouseX + ", y: " + mouseY);
+
+
+        // Check if the game is in its active state
+        if (active === true) {
+            // Check if the user clicks a point that has a horizontal distance from the
+            // position of the effective center of the player greater than its vertical distance
+            // The player centre is located approximately 50px from its x coordinate and 85px
+            // from its y coordinate
+            if (Math.abs(mouseX - (player.x + 50)) > (Math.abs(mouseY - (player.y + 107)))) {
+                // Check if the click is on the left of the player
+                if (mouseX < player.x) {
+                    // Move the player on the left
+                    player.handleInput("left");
+                // Check if the click is on the right of the player
+                } else {
+                    // Move the player on the right
+                    player.handleInput("right");
+                }
+            }
+            // Check if the user clicks a point that has a vertical distance from the
+            // position of the effective center of the player greater than its horizontal distance
+            else {
+                // Check if the click is on the bottom of the player
+                if (mouseY > player.y) {
+                    // Move the player down
+                    player.handleInput("down");
+                // Check if the click is on the top of the player
+                } else {
+                    // Move the player up
+                    player.handleInput("up");
+                }
+            }
+            // else if (Math.abs(mouseX - player.x) > (Math.abs(mouseY - player.y))) {
+            //     console.log("yeah!");
+                //player.handleInput("left");
+
+        }
+    }
+
+
+    /* Listen for a touch from the user to move the player. When the user
+     * touches on the game field inside the canvas, the function detects
+     * its distance from the player and decides which of the four main
+     * directions has the greater distance from the player center.
+     * If the point is midway between two directions (like NW), it computes
+     * the distance between it and the player and evaluates which coordinate
+     * is farther from the player image center.
+     */
+    function touchDown(e) {
+        if(!e) {
+            e = event;
+        }
+        e.preventDefault();
+        // Assign to clickOnStartX and clickOnStartY the x and y coordinates
+        // inside the canvas parent element, that is body.
+        // To get the x and y coordinates of the click event relative to the canvas,
+        // we need to consider that the canvas element has an offset from its
+        // parent element. To take that into account, subtract the left and top
+        // canvas offsets from the x and y coordinates registered inside the body.
+        var mouseX = e.targetTouches[0].pageX - canvas.offsetLeft;
+        var mouseY = e.targetTouches[0].pageY - canvas.offsetTop;
+
+        //console.log("x: " + mouseX + ", y: " + mouseY);
+
+
+        // Check if the game is in its active state
+        if (active === true) {
+            // Check if the user clicks a point that has a horizontal distance from the
+            // position of the effective center of the player greater than its vertical distance
+            // The player centre is located approximately 50px from its x coordinate and 85px
+            // from its y coordinate
+            if (Math.abs(mouseX - (player.x + 50)) > (Math.abs(mouseY - (player.y + 107)))) {
+                // Check if the click is on the left of the player
+                if (mouseX < player.x) {
+                    // Move the player on the left
+                    player.handleInput("left");
+                // Check if the click is on the right of the player
+                } else {
+                    // Move the player on the right
+                    player.handleInput("right");
+                }
+            }
+            // Check if the user clicks a point that has a vertical distance from the
+            // position of the effective center of the player greater than its horizontal distance
+            else {
+                // Check if the click is on the bottom of the player
+                if (mouseY > player.y) {
+                    // Move the player down
+                    player.handleInput("down");
+                // Check if the click is on the top of the player
+                } else {
+                    // Move the player up
+                    player.handleInput("up");
+                }
+            }
+            // else if (Math.abs(mouseX - player.x) > (Math.abs(mouseY - player.y))) {
+            //     console.log("yeah!");
+                //player.handleInput("left");
+
+        }
+    }
+
 
 
     // Load all of the images we know we're going to need to draw our game level.

@@ -26,7 +26,7 @@ var Enemy = function() {
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 25;
     // Offset of the effective image from the y position, necessary to detect collision
-    this.yOffset = 40;
+    this.yOffset = 40;//85;//40;
     // Effective width of the image, necessary to detect collision
     this.effectiveWidth = 50;
     // Effective height of the image, necessary to detect collision
@@ -95,7 +95,7 @@ var Player = function() {
     // Offset of the effective image from the x position
     this.xOffset = 2;
     // Offset of the effective image from the y position
-    this.yOffset = 40;
+    this.yOffset = 40;//40;85;
     // Effective width of the image; necessary to detect collision
     this.effectiveWidth = 96;
     // Effective height of the image; necessary to detect collision
@@ -237,6 +237,7 @@ Array.prototype.checkNumberOfItems = function() {
         this.push(new Enemy());
     }
 };
+
 
 /* This listens for key presses and sends the keys to your
  * Player.handleInput() method. You don't need to modify this.
