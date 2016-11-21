@@ -25,7 +25,12 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime,
         // Flag variable set to true when user is playing the game, false otherwise
-        active = false;
+        active = false,
+        touchX = 0,
+        touchY = 0,
+        startTouchX = 0,
+        startTouchX = 0,
+        touchUp = 0;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -302,10 +307,10 @@ var Engine = (function(global) {
 
     /* Listen for user actions
      */
-    canvas.addEventListener('click', clickOnStart, false);
-    canvas.addEventListener("touchstart", touchOnStart, false);
+    //canvas.addEventListener('click', clickOnStart, false);
+    //canvas.addEventListener("touchend", touchOnStart, false);
     canvas.addEventListener("mousedown", mouseDown, false);
-    canvas.addEventListener("touchstart", touchDown, false);
+    canvas.addEventListener("touchdown", touchDown, false);
 
     /* Listen for a click of the mouse. If the user clicks the "Start Game" text inside
      * canvas, the function playGame is called and the game starts.
@@ -335,6 +340,8 @@ var Engine = (function(global) {
             }
         }
 
+        console.log("StartMouse");
+
 
         //
         // console.log("x: " + mouseX + ", y: " + mouseY);
@@ -358,19 +365,28 @@ var Engine = (function(global) {
         // we need to consider that the canvas element has an offset from its
         // parent element. To take that into account, subtract the left and top
         // canvas offsets from the x and y coordinates registered inside the body.
-        var clickOnStartX = e.targetTouches[0].pageX - canvas.offsetLeft;
-        var clickOnStartY = e.targetTouches[0].pageY - canvas.offsetTop;
+        startTouchX = e.targetTouches[0].pageX - canvas.offsetLeft;
+        startTouchY = e.targetTouches[0].pageY - canvas.offsetTop;
         // Check if the x and y mouse coordinates are inside the text "Start Game"
-        if (clickOnStartX > 145 && clickOnStartX < 360) {
-            if (clickOnStartY > 312 && clickOnStartY < 350) {
+        if (touchUp === 0) {
+            if (startTouchX > 145 && startTouchX < 360) {
+                if (startTouchY > 312 && startTouchY < 350) {
 
-                //
-                //console.log("Start!");
+                    //
+                    //console.log("Start!");
 
-                // If the user clicks inside the text, start the game
-                playGame();
+                    // If the user clicks inside the text, start the game
+                    playGame();
+                }
             }
         }
+
+        console.log(e.targetTouches.length);
+        touchUp = 1;
+        console.log(touchUp);
+        console.log(e.targetTouches.length);
+        //console.log("touch x: " + e.targetTouches[0].pageX);
+        //console.log("touch y: " + e.targetTouches[0].pageY);
 
 
         //
@@ -408,7 +424,25 @@ var Engine = (function(global) {
 
 
         // Check if the game is in its active state
-        if (active === true) {
+        if (active === false) {
+
+            if (mouseX > 145 && mouseX < 360) {
+                if (mouseY > 312 && mouseY < 350) {
+
+                //
+                //console.log("Start!");
+
+                // If the user clicks inside the text, start the game
+                    playGame();
+                }
+            }
+        } else {
+
+            //}
+
+
+
+
             // Check if the user clicks a point that has a horizontal distance from the
             // position of the effective center of the player greater than its vertical distance
             // The player centre is located approximately 50px from its x coordinate and 85px
@@ -442,6 +476,8 @@ var Engine = (function(global) {
                 //player.handleInput("left");
 
         }
+
+        console.log("MoveMouse");
     }
 
 
@@ -464,21 +500,41 @@ var Engine = (function(global) {
         // we need to consider that the canvas element has an offset from its
         // parent element. To take that into account, subtract the left and top
         // canvas offsets from the x and y coordinates registered inside the body.
-        var mouseX = e.targetTouches[0].pageX - canvas.offsetLeft;
-        var mouseY = e.targetTouches[0].pageY - canvas.offsetTop;
+        touchX = e.targetTouches[0].pageX - canvas.offsetLeft;
+        touchY = e.targetTouches[0].pageY - canvas.offsetTop;
 
         //console.log("x: " + mouseX + ", y: " + mouseY);
 
 
         // Check if the game is in its active state
-        if (active === true) {
+        if (active === false) {
+
+            if (startTouchX > 145 && startTouchX < 360) {
+                if (startTouchY > 312 && startTouchY < 350) {
+
+                    //
+                    //console.log("Start!");
+
+                    // If the user clicks inside the text, start the game
+                    playGame();
+                }
+            }
+
+
+
+
+
+        } else {
+
+
+        //}
             // Check if the user clicks a point that has a horizontal distance from the
             // position of the effective center of the player greater than its vertical distance
             // The player centre is located approximately 50px from its x coordinate and 85px
             // from its y coordinate
-            if (Math.abs(mouseX - (player.x + 50)) > (Math.abs(mouseY - (player.y + 107)))) {
+            if (Math.abs(touchX - (player.x + 50)) > (Math.abs(touchY - (player.y + 107)))) {
                 // Check if the click is on the left of the player
-                if (mouseX < player.x) {
+                if (touchX < player.x) {
                     // Move the player on the left
                     player.handleInput("left");
                 // Check if the click is on the right of the player
@@ -491,7 +547,7 @@ var Engine = (function(global) {
             // position of the effective center of the player greater than its horizontal distance
             else {
                 // Check if the click is on the bottom of the player
-                if (mouseY > player.y) {
+                if (touchY > player.y) {
                     // Move the player down
                     player.handleInput("down");
                 // Check if the click is on the top of the player
@@ -505,6 +561,8 @@ var Engine = (function(global) {
                 //player.handleInput("left");
 
         }
+
+        console.log("MoveTouch");
     }
 
 
