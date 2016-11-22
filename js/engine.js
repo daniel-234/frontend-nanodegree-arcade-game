@@ -26,10 +26,17 @@ var Engine = (function(global) {
         lastTime,
         // Flag variable set to true when user is playing the game, false otherwise
         active = false,
+        // Flag variable set to true if the player collided with an enemy, false otherwise
+        crashed = false,
+        // mouse click x and y coordinates
         mouseX = 0,
         mouseY = 0,
+        // user touch x and y coordinates
         touchX = 0,
         touchY = 0,
+        // x and y coordinates of an imaginary rectangle that surrounds the text 'Start Game'
+        // or 'Start Again' in the initial screens. The user needs to click or touch this text
+        // in order for the game to start
         startTextInitialX = 145,
         startTextInitialY = 312,
         startTextFinishingX = 360,
@@ -75,7 +82,11 @@ var Engine = (function(global) {
         if (active) {
             win.requestAnimationFrame(main);
         } else {
-            renderAtGameOver();
+            if (crashed === true) {
+                renderAtGameOver();
+            } else {
+                renderAfterWin();
+            }
         }
 
 
@@ -119,7 +130,7 @@ var Engine = (function(global) {
     function playGame() {
         // Set the active flag variable to true to start the game
         active = true;
-
+        crashed = false;
 
         //
         //firstStart = false;
@@ -165,6 +176,19 @@ var Engine = (function(global) {
     /* TODO
      * Draw the screen to Start Again after victory.
      */
+     /* Draw the screen to Start Again after Game Over.
+     */
+    function renderAfterWin() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGameScene();
+        ctx.font = "50pt Impact";
+        ctx.fillText("You Won!", 125, 262);
+        ctx.font = "36pt Impact";
+        ctx.fillText("Start Again", 140, 352);
+        player.startAgain();
+        //renderEntities();
+        //crashed = false;
+    }
 
 
 
@@ -269,6 +293,7 @@ var Engine = (function(global) {
     function checkCollisions() {
         allEnemies.forEach(function(enemy) {
             if (player.checkCollision(enemy)) {
+                crashed = true;
                 reset();
                 //console.log("collision");
             }
@@ -304,6 +329,7 @@ var Engine = (function(global) {
         // }
 
         active = false;
+        //crashed = false;
 
         //
         //player.checkIfWon();
