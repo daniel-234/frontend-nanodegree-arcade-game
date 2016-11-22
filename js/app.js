@@ -232,7 +232,7 @@ function getRandomInt(min, max) {
  * If the numer is less than 3, add a new enemy to the array.
  */
 Array.prototype.checkNumberOfItems = function() {
-    console.log(this.length);
+    //console.log(this.length);
     if (this.length < 3) {
         this.push(new Enemy());
     }
