@@ -170,6 +170,7 @@ var Engine = (function(global) {
         ctx.font = "36pt Impact";
         ctx.fillText("Start Again", 140, 352);
         player.startAgain();
+        allEnemies.reFill();
         //renderEntities();
     }
 
@@ -186,6 +187,7 @@ var Engine = (function(global) {
         ctx.font = "36pt Impact";
         ctx.fillText("Start Again", 140, 352);
         player.startAgain();
+        allEnemies.reFill();
         //renderEntities();
         //crashed = false;
     }

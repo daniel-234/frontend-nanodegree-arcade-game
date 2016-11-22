@@ -78,7 +78,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
 /* Player class with x and y coordinates, x and y offset, width and height, dx
  * and dy steps and sprite.
  * Player image is positioned at the bottom of the canvas as the game starts.
@@ -236,6 +235,10 @@ Array.prototype.checkNumberOfItems = function() {
     if (this.length < 3) {
         this.push(new Enemy());
     }
+};
+
+Array.prototype.reFill = function() {
+    allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 };
 
 
