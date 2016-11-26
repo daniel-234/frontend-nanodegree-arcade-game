@@ -893,7 +893,7 @@ var Engine = (function(global) {
 
         //ctx.drawImage(inMemCtx, 0, 0, inMemCtx.naturalWidth * scaleFactor, inMemCtx.naturalHeight * scaleFactor);
 
-        //init();
+        init();
 
 
 
