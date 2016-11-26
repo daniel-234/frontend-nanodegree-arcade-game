@@ -12,25 +12,34 @@ var horizontalSteps = [120, 240, 360, 480];
  */
 var Enemy = function() {
     // Starting horizontal position of enemies is out of canvas on the left
-    this.x = -101;
+    //                   this.x = -101 * scaleFactor;
+    //var start1 = -0.2 * aCanvasWidth;
+    //var start2 = -101 * scaleFactor;
+    //this.x = -0.2 * aCanvasWidth;   // -101 / 505
+    this.x = -101 * scaleFactor;
+    //console.log("width: " + start1 + " scale: " + start2);
+
     // Get a random vertical position for each enemy instance inside the stone path
-    var verticalPos = verticalCoordinate[getRandomInt(0, 2)]
+    var verticalPos = verticalCoordinate[getRandomInt(0, 2)];   // * scaleFactor;
+
+    console.log(verticalPos);
+
     // Starting vertical coordinate of an enemy object
-    this.y = verticalPos;
+    this.y = verticalPos * scaleFactor;   // / 606 * aCanvasHeight;
     // Get a random speed for each enemy instance
-    var dxStep = horizontalSteps[getRandomInt(0, 3)];
-    this.dx = dxStep
+    var dxStep = horizontalSteps[getRandomInt(0, 3)] * scaleFactor;
+    this.dx = dxStep;
     //console.log("Vertical pos: " + verticalPos);
     //console.log("Horizontal step: " + dxStep);
 
     // Offset of the effective image from the x position, necessary to detect collision
-    this.xOffset = 25;
+    this.xOffset = 25 * scaleFactor;
     // Offset of the effective image from the y position, necessary to detect collision
-    this.yOffset = 40;//85;//40;
+    this.yOffset = 40 * scaleFactor;    //85;//40;
     // Effective width of the image, necessary to detect collision
-    this.effectiveWidth = 50;
+    this.effectiveWidth = 50 * scaleFactor;
     // Effective height of the image, necessary to detect collision
-    this.effectiveHeight = 60;
+    this.effectiveHeight = 60 * scaleFactor;
     // The image/sprite for our enemies, this uses a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
@@ -42,7 +51,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter which will ensure
     // the game runs at the same speed for all computers.
     // The enemy moves until it is completely out of canvas.
-    if (this.x <= 610) {
+    if (this.x <= 610 * scaleFactor) { // / 505 * aCanvasWidth) {
         this.x += this.dx * dt;
     }
     else {
@@ -57,7 +66,7 @@ Enemy.prototype.update = function(dt) {
  * array by index position .
  */
 Enemy.prototype.determineIfOut = function() {
-    if (this.x > 610) {
+    if (this.x > 610 * scaleFactor) {     // / 505 * aCanvasWidth) {
         var that = this;
         var pos = allEnemies.indexOf(that)
 
@@ -75,7 +84,8 @@ Enemy.prototype.determineIfOut = function() {
 /* Draw the enemy on the screen, required method for game
  */
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
+        Resources.get(this.sprite).naturalWidth * scaleFactor, Resources.get(this.sprite).naturalHeight * scaleFactor);
 };
 
 /* Player class with x and y coordinates, x and y offset, width and height, dx
@@ -87,25 +97,29 @@ Enemy.prototype.render = function() {
  * and a sprit property to locate the image inside the images folder.
  */
 var Player = function() {
-    this.x = 202;
-    this.y = 400;
+    this.oldScale = scaleFactor;
+    //this.startX = 202;
+    //this.startY = 400;
+    this.x = 202 * scaleFactor;
+    this.y = 400 * scaleFactor;
     this.dx = 0;
     this.dy = 0;
     // Offset of the effective image from the x position
-    this.xOffset = 2;
+    this.xOffset = 2 * scaleFactor;
     // Offset of the effective image from the y position
-    this.yOffset = 40;//40;85;
+    this.yOffset = 40 * scaleFactor;   //40;85;
     // Effective width of the image; necessary to detect collision
-    this.effectiveWidth = 96;
+    this.effectiveWidth = 96 * scaleFactor;
     // Effective height of the image; necessary to detect collision
-    this.effectiveHeight = 45;
+    this.effectiveHeight = 45 * scaleFactor;
     this.sprite = 'images/char-boy.png';
 };
 
 /* Draw the player on the screen, required method for game
  */
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
+        Resources.get(this.sprite).naturalWidth * scaleFactor, Resources.get(this.sprite).naturalHeight * scaleFactor);
 };
 
 /* Handle the player inputs. Each time the user presses an arrow key,
@@ -116,16 +130,16 @@ Player.prototype.render = function() {
  */
 Player.prototype.handleInput = function(key) {
     if (key === "left" && this.x > 0) {
-        this.dx = -101;
+        this.dx = -101 * scaleFactor;
     }
-    if (key === "right" && this.x < 354) {
-        this.dx = 101;
+    if (key === "right" && this.x < 354 * scaleFactor) {
+        this.dx = 101 * scaleFactor;
     }
-    if (key === "down" && this.y < 400) {
-        this.dy = 83;
+    if (key === "down" && this.y < 400 * scaleFactor) {
+        this.dy = 83 * scaleFactor;
     }
     if (key === "up" && this.y > 0) {
-        this.dy = -83
+        this.dy = -83 * scaleFactor;
     }
 
 
@@ -165,14 +179,40 @@ Player.prototype.update = function() {
     //     this.y = 400;
     // }
     //else {
+
+
+        //this.playerScale = scaleFactor;
+
         this.x += this.dx;
         this.y += this.dy;
+        //this.x *= scaleFactor;
+        //this.y *= scaleFactor;
         this.dx = 0;
         this.dy = 0;
     //}
 
     //console.log("Player pos: " + this.y);
 };
+
+
+
+Player.prototype.updateIfResized = function() {
+    // var oldScale = scaleFactor;
+    // console.log("original x: " + this.x + " - original y: " + this.y);
+    // this.x = this.x * scaleFactor;
+    // this.y = this.y * scaleFactor;
+    // console.log("updated x: " + this.x + " - updated y: " + this.y);
+
+    if (scaleFactor != oldScaleFactor) {
+            this.x /= oldScaleFactor;
+            this.x *= scaleFactor
+            this.y /= oldScaleFactor;
+            this.y *= scaleFactor;
+        }
+};
+
+
+
 
 /* Determnine if the player has reached the water safely.
  */
