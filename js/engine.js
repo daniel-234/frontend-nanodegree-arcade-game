@@ -14,6 +14,7 @@
  * a little simpler to work with.
  */
 
+// See if only scaleFactor is needed here
 var scaleFactor,
     oldScaleFactor,
     resized = false,
@@ -775,6 +776,7 @@ var Engine = (function(global) {
             //scaleFactor = scaleFactor = doc.documentElement.clientHeight / originalHeight;
         }
 
+        // Use scaleFactor here
         startTextInitialX = 0.2871 * canvasWidth;
         startTextInitialY = 0.51485 * canvasHeight;
         startTextFinishingX = 0.71287 * canvasWidth;
@@ -787,6 +789,7 @@ var Engine = (function(global) {
 
     }
 
+    // Do we really need this function?
     function displayViewportSize() {
         // Get the dimensions of the viewport
         //var viewportWidth = doc.documentElement.clientWidth;
@@ -837,6 +840,8 @@ var Engine = (function(global) {
         //     scaleFactor = 1;
         //     //scaleFactor = scaleFactor = doc.documentElement.clientHeight / originalHeight;
         // }
+
+        // calling a function on player and enemy?
         player.x /= scaleFactor;
         player.y /= scaleFactor;
         allEnemies.forEach(function(enemy) {
@@ -871,6 +876,7 @@ var Engine = (function(global) {
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
 
+        // maybe calling a function on either payer and enemy is more appropriate?
         player.x *= scaleFactor;
         player.y *= scaleFactor;
         allEnemies.forEach(function(enemy) {
