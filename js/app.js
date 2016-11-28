@@ -7,8 +7,8 @@ var gemsXCoordinate = [30, 132, 233, 334, 435];
 // Array that holds all the possible values of y positions for gems
 var gemsYCoordinate = [180, 263];
 // Array that holds the paths to the 3 gems sprites
-var gemsSprites = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
-
+//var gemsSprites = ['images/gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
+var availableGems = ["blue", "green", "orange"];
 
 /* Enemies our player must avoid.
  * Each enemy has an x and y coordinate to place its sprite; an x and y offset
@@ -261,8 +261,50 @@ Player.prototype.checkCollision = function(obj) {
 var Gem = function() {
     this.x = gemsXCoordinate[getRandomInt(0, 4)] * scaleFactor;
     this.y = gemsYCoordinate[getRandomInt(0, 1)] * scaleFactor;
-    this.sprite = gemsSprites[getRandomInt(0, 2)];
+
+    //this.availableGems = ['blue', 'green', 'orange'];
+    //var chosen = availableGems[getRandomInt(0, 2)];
+    //this.sprite = gemsSprites[pickGem(availableGems)];
+    //pickGem(this.availableGems);
+    //var selected = selectGem(availableGems);
+    //var image = 'images/gem Blue.png'
+    var gemType = selectGem(availableGems);
+    this.sprite = 'images/gem-' + gemType + '.png';          //'images/Gem Blue.png';
+    console.log('images/gem-' + gemType + '.png');
 };
+
+function selectGem(arr) {
+    var gem = "",
+        len = arr.length;
+    var rand;
+    if (len > 0) {
+        rand = getRandomInt(0, len - 1);
+        gem = arr[rand];
+        console.log("Random is " + rand);
+        /*
+        elem =
+        if (elem === 0) {
+            gem = arr[elem];  //"blue";
+        } else if (elem === 1) {
+            gem = "green";
+        } else {
+            gem = "orange";
+        }
+        */
+    }
+
+    return gem;
+
+
+    /*
+    console.log(arr);
+    var picked = arr.splice(getRandomInt(0, 2), 1);
+    console.log(picked);
+    //availableGems.
+    arr.push(picked);
+    console.log(arr);
+    */
+}
 
 /* Draw the gems on the screen at positions x and y, scaled at 40% of its
  * original size.
@@ -285,6 +327,8 @@ var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 var player = new Player();
 
 var gem = new Gem();
+
+
 
 
 /* Get a random integer number between min (included) and max (included)
