@@ -1,8 +1,14 @@
 // Array to hold all the accepted values for the y coordinate of enemies
-var verticalCoordinate = [60, 143, 226];
+var enemyVerticalCoordinate = [60, 143, 226];
 // Array to hold all the possible values for horizontal speed of enemies
-var horizontalSteps = [120, 240, 360, 480];
-// Real dimensions of images in the images folder
+var enemyHorizontalSteps = [120, 240, 360, 480];
+// Array that holds all the possible values of x positions for gems
+var gemsXCoordinate = [30, 132, 233, 334, 435];
+// Array that holds all the possible values of y positions for gems
+var gemsYCoordinate = [180, 263];
+// Array that holds the paths to the 3 gems sprites
+var gemsSprites = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
+
 
 /* Enemies our player must avoid.
  * Each enemy has an x and y coordinate to place its sprite; an x and y offset
@@ -20,14 +26,14 @@ var Enemy = function() {
     //console.log("width: " + start1 + " scale: " + start2);
 
     // Get a random vertical position for each enemy instance inside the stone path
-    var verticalPos = verticalCoordinate[getRandomInt(0, 2)];   // * scaleFactor;
+    var verticalPos = enemyVerticalCoordinate[getRandomInt(0, 2)];   // * scaleFactor;
 
     console.log(verticalPos);
 
     // Starting vertical coordinate of an enemy object
     this.y = verticalPos * scaleFactor;   // / 606 * aCanvasHeight;
     // Get a random speed for each enemy instance
-    var dxStep = horizontalSteps[getRandomInt(0, 3)] * scaleFactor;
+    var dxStep = enemyHorizontalSteps[getRandomInt(0, 3)] * scaleFactor;
     this.dx = dxStep;
     //console.log("Vertical pos: " + verticalPos);
     //console.log("Horizontal step: " + dxStep);
@@ -247,6 +253,26 @@ Player.prototype.checkCollision = function(obj) {
     }
 };
 
+/* Gem class with x and y coordinates and sprite.
+ * Gem image is selected randomly from an array of 3 values named
+ * 'gemsSprites'. Its x and y coordinates can assume only certain values that
+ * can be randomly chosen from arrays 'gemsXCoordinate' and 'gemsYCoordinate'.
+ */
+var Gem = function() {
+    this.x = gemsXCoordinate[getRandomInt(0, 4)] * scaleFactor;
+    this.y = gemsYCoordinate[getRandomInt(0, 1)] * scaleFactor;
+    this.sprite = gemsSprites[getRandomInt(0, 2)];
+};
+
+/* Draw the gems on the screen at positions x and y, scaled at 40% of its
+ * original size.
+ */
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
+        Resources.get(this.sprite).naturalWidth * 0.4 * scaleFactor,
+        Resources.get(this.sprite).naturalHeight * 0.4 * scaleFactor);
+};
+
 
 /* Instantiate the enemy objects.
  * Place all enemy objects in an array called allEnemies.
@@ -257,6 +283,8 @@ var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 /* Instantiate the player object. There is only one player per game.
  */
 var player = new Player();
+
+var gem = new Gem();
 
 
 /* Get a random integer number between min (included) and max (included)

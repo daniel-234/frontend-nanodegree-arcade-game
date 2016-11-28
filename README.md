@@ -40,4 +40,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * [Stackoverflow - Canvas drawImage scaling](http://stackoverflow.com/questions/10841532/canvas-drawimage-scaling)
 * [Stackoverflow - Working with canvas in different screen sizes](http://stackoverflow.com/questions/8625208/working-with-canvas-in-different-screen-sizes/8626456#8626456)
 * [Kirupa - Resizing the HTML5 Canvas Element](https://www.kirupa.com/html5/resizing_html_canvas_element.htm)
-* This answer on Stackoverflow let me resize text in response to a resize in canvas - [Stackoverflow - HTML5 Canvas FontSize Based on Canvas Size](http://stackoverflow.com/questions/22943186/html5-canvas-font-size-based-on-canvas-size)
+* This answer on Stackoverflow helped me find a solution to resize text in response to canvas resizing - [Stackoverflow - HTML5 Canvas FontSize Based on Canvas Size](http://stackoverflow.com/questions/22943186/html5-canvas-font-size-based-on-canvas-size)

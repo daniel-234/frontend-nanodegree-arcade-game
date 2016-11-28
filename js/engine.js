@@ -320,8 +320,12 @@ var Engine = (function(global) {
     function render() {
         // Render the game level scenario
         drawGameScene();
+
+        renderExtras();
         // Render the game entities (player and enemies)
         renderEntities();
+
+        //renderExtras();
     }
 
     /* Call the render functions you have defined on your enemy and player
@@ -380,6 +384,11 @@ var Engine = (function(global) {
         //
         //player.checkIfWon();
 
+    }
+
+
+    function renderExtras(dt) {
+        gem.render();
     }
 
 
@@ -723,7 +732,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);      //init);
 
@@ -850,6 +862,8 @@ var Engine = (function(global) {
             enemy.dx /= scaleFactor;
             enemy.dy /= scaleFactor;
         });
+        gem.x /= scaleFactor;
+        gem.y /= scaleFactor;
 
         var canvasWidth = calculateCanvasSize()[0];
         var canvasHeight = calculateCanvasSize()[1];
@@ -879,6 +893,8 @@ var Engine = (function(global) {
         // maybe calling a function on either payer and enemy is more appropriate?
         player.x *= scaleFactor;
         player.y *= scaleFactor;
+        gem.x *= scaleFactor;
+        gem.y *= scaleFactor;
         allEnemies.forEach(function(enemy) {
             enemy.x *= scaleFactor;
             enemy.y *= scaleFactor;
