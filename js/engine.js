@@ -302,6 +302,7 @@ var Engine = (function(global) {
                     Resources.get(rowImages[row]).naturalWidth * scaleFactor, Resources.get(rowImages[row]).naturalHeight * scaleFactor);
             }
         }
+
     }
 
 
@@ -353,6 +354,7 @@ var Engine = (function(global) {
         renderEntities();
 
         //renderExtras();
+        renderScore();
     }
 
     /* Call the render functions you have defined on your enemy and player
@@ -375,6 +377,13 @@ var Engine = (function(global) {
 
     function renderExtras() {
         gem.render();
+    }
+
+    function renderScore() {
+        var fontSizeGameStart = 16 * scaleFactor;
+        ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
+        //ctx.fillStyle = "#fff";
+        ctx.fillText("Score: " + player.score, 20 * scaleFactor, 572 * scaleFactor);   //140, 352);
     }
 
 
