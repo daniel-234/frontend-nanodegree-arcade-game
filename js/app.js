@@ -10,6 +10,7 @@ var gemsYCoordinate = [180, 263];
 //var gemsSprites = ['images/gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
 var availableGems = ["blue", "green", "orange"];
 
+
 /* Enemies our player must avoid.
  * Each enemy has an x and y coordinate to place its sprite; an x and y offset
  * to detect the exact position of the image inside the sprite; an effective
@@ -118,7 +119,10 @@ var Player = function() {
     this.effectiveWidth = 96 * scaleFactor;
     // Effective height of the image; necessary to detect collision
     this.effectiveHeight = 45 * scaleFactor;
+    this.collected = [];
+    this.score = 0;
     this.sprite = 'images/char-boy.png';
+    console.log("score: " + this.score);
 };
 
 /* Draw the player on the screen, required method for game
@@ -237,6 +241,7 @@ Player.prototype.checkIfWon = function() {
  */
 Player.prototype.startAgain = function() {
     player = new Player();
+    //availableGems = ["blue", "green", "orange"];
 };
 
 /* Check that there is no gap between the player and another object. If this condition is met,
@@ -253,6 +258,55 @@ Player.prototype.checkCollision = function(obj) {
     }
 };
 
+
+Player.prototype.collect = function(obj) {
+    var item = availableGems.indexOf(obj.gemType);
+    // for (var i = 0; i < availableGems.length; i++) {
+    //     if (availableGems[i]) {
+    //         item = availableGems.indexOf(obj.gemType);
+    //     }
+    // }
+    //item = -1;
+    //var
+    //var collectedGem = availableGems.splice(item, 1);     //availableGems.indexOf(obj.gemType));
+    console.log("collected " + obj.gemType);
+    //this.updateScore(obj.gemType);
+    this.collected.push(availableGems[item]);
+    console.log("type " + item);
+    availableGems.splice(item, 1);
+    console.log("pushed " + this.collected);
+    this.score += 20;
+};
+
+Player.prototype.updateScore = function() {
+    var playerScore = 0,
+        blueScore = 0,
+        greenScore = 0,
+        orangeScore = 0;
+    for (var elem = 0; elem < this.collected.length; elem++) {
+       if (this.collected[elem] === "blue") {
+           blueScore = 15;
+           console.log("score blue: " + blueScore);
+           playerScore += blueScore;
+       } else if (this.collected[elem] === "green") {
+            greenScore = 20;
+            console.log("score green: " + greenScore);
+            playerScore += greenScore;
+        }
+        if (this.collected[elem] === "orange") {
+            orangeScore = 25;
+            console.log("score orange: " + orangeScore);
+            playerScore += orangeScore;
+        }
+    }
+
+    this.score = playerScore;
+
+    //this.score += 20;  //blueScore + greenScore + orangeScore;
+    console.log("player score: " + playerScore);
+    console.log("score: " + this.score);
+};
+
 /* Gem class with x and y coordinates and sprite.
  * Gem image is selected randomly from an array of 3 values named
  * 'gemsSprites'. Its x and y coordinates can assume only certain values that
@@ -262,15 +316,25 @@ var Gem = function() {
     this.x = gemsXCoordinate[getRandomInt(0, 4)] * scaleFactor;
     this.y = gemsYCoordinate[getRandomInt(0, 1)] * scaleFactor;
 
+    // Offset of the effective image from the x position, necessary to detect collision
+    this.xOffset = 1 * 0.4 * scaleFactor;
+    // Offset of the effective image from the y position, necessary to detect collision
+    this.yOffset = 50 * 0.4 * scaleFactor;    //85;//40;
+    // Effective width of the image, necessary to detect collision
+    this.effectiveWidth = 37 * 0.4 * scaleFactor;
+    // Effective height of the image, necessary to detect collision
+    this.effectiveHeight = 40 * 0.4 * scaleFactor;
+    // The image/sprite for our enemies, this uses a helper we've provided to easily load images
+
     //this.availableGems = ['blue', 'green', 'orange'];
     //var chosen = availableGems[getRandomInt(0, 2)];
     //this.sprite = gemsSprites[pickGem(availableGems)];
     //pickGem(this.availableGems);
     //var selected = selectGem(availableGems);
     //var image = 'images/gem Blue.png'
-    var gemType = selectGem(availableGems);
-    this.sprite = 'images/gem-' + gemType + '.png';          //'images/Gem Blue.png';
-    console.log('images/gem-' + gemType + '.png');
+    this.gemType = selectGem(availableGems);
+    this.sprite = 'images/gem-' + this.gemType + '.png';          //'images/Gem Blue.png';
+    console.log('images/gem-' + this.gemType + '.png');
 };
 
 function selectGem(arr) {
@@ -315,6 +379,10 @@ Gem.prototype.render = function() {
         Resources.get(this.sprite).naturalHeight * 0.4 * scaleFactor);
 };
 
+Gem.prototype.replace = function() {
+    gem = new Gem();
+};
+
 
 /* Instantiate the enemy objects.
  * Place all enemy objects in an array called allEnemies.
@@ -347,6 +415,13 @@ Array.prototype.checkNumberOfItems = function() {
     if (this.length < 3) {
         this.push(new Enemy());
     }
+};
+
+Array.prototype.replaceGems = function() {
+    //console.log(this.length);
+    console.log("before: " + availableGems);
+    availableGems = ["blue", "green", "orange"];
+    console.log("after: " + availableGems);
 };
 
 Array.prototype.reFill = function() {

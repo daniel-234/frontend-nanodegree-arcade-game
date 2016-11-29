@@ -63,7 +63,9 @@ var Engine = (function(global) {
         // the new dimensions compared to the original ones and use
         // that value to redraw the canvas and scale it proportionally.
         originalWidth = 505,
-        originalHeight = 606;
+        originalHeight = 606,
+
+        remainingGems = 3;
         // Set a variable that calculates the scale factor for smaller
         // viewports. The game field fits in a canvas that has dimensions
         // equal to originalWidth and originalHeight. If the viewport is
@@ -174,9 +176,12 @@ var Engine = (function(global) {
      */
     function playGame() {
         // Set the active flag variable to true to start the game
+        //availableGems = 3,
+        remainingGems = 3;
         active = true;
         crashed = false;
 
+        //availableGems = 3;
         //
         //firstStart = false;
         //
@@ -214,10 +219,20 @@ var Engine = (function(global) {
         drawGameScene();
         ctx.font = fontSizeGameOver + "pt" + " " + " Impact";
         ctx.fillText("Game Over", 0.208 * canvas.width, 0.432 * canvas.height);  //105, 262);
+
+        //availableGems = 3;
         ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
         ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);   //140, 352);
+        //availableGems = 3;
+        availableGems.replaceGems();
+
         player.startAgain();
         allEnemies.reFill();
+
+        //remainingGems = 3;
+        //availableGems.replaceGems();
+
+        //availableGems = 3;
         //renderEntities();
     }
 
@@ -233,13 +248,22 @@ var Engine = (function(global) {
         drawGameScene();
         ctx.font = fontSizeWin + "pt" + " " + " Impact";
         ctx.fillText("You Won!", 0.247 * canvas.width, 0.432 * canvas.height);
+
+        //availableGems = 3;
         //ctx.fillText("You Won!", 125, 262);
         //ctx.font = "36pt Impact";
         //ctx.fillText("Start Again", 140, 352);
         ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
         ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);   //140, 352);
+
+        availableGems.replaceGems();
         player.startAgain();
         allEnemies.reFill();
+
+        //remainingGems = 3;
+        //availableGems = ["blue", "green", "orange"];
+
+        //availableGems = 3;
         //renderEntities();
         //crashed = false;
     }
@@ -321,7 +345,10 @@ var Engine = (function(global) {
         // Render the game level scenario
         drawGameScene();
 
-        renderExtras();
+        if (remainingGems > 0) {
+            renderExtras();
+        }
+
         // Render the game entities (player and enemies)
         renderEntities();
 
@@ -346,13 +373,19 @@ var Engine = (function(global) {
     }
 
 
+    function renderExtras() {
+        gem.render();
+    }
+
+
     /* Call all of the functions which may need to update entity's data.
      * This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data.
      */
     function update(dt) {
         updateEntities(dt);
-        checkCollisions();
+        checkCollisionsWithEnemies();
+        checkCollisionsWithGems();
     }
 
     /* Update the data/properties related to the game objects (enemies
@@ -387,14 +420,12 @@ var Engine = (function(global) {
     }
 
 
-    function renderExtras(dt) {
-        gem.render();
-    }
+
 
 
     /* Check if there is a collision. If any is detected, reset the game.
      */
-    function checkCollisions() {
+    function checkCollisionsWithEnemies() {
         allEnemies.forEach(function(enemy) {
             if (player.checkCollision(enemy)) {
                 crashed = true;
@@ -403,10 +434,77 @@ var Engine = (function(global) {
             }
         });
 
-
         //
         //player.checkIfWon();
+    }
 
+
+    function checkCollisionsWithGems() {
+        // Check if the player touches a gem
+        if (player.checkCollision(gem)) {
+
+            //player.updateScore();
+            //player.collect(gem);
+            //player.updateScore();
+            //player.updateScore(gem);
+
+
+            // Check if there are more gems to collect
+            if (remainingGems > 0) {
+                // Decrease the number of gems still remaining
+                remainingGems -= 1;
+                // Collect the gem
+                player.collect(gem);
+                // Update the
+                player.updateScore();
+
+                // Check if there are any more gems to display
+                if (remainingGems > 0) {
+                    //player.collect(gem);
+
+                    // Display one of the remaining gems
+                    gem.replace();
+                }
+
+            }
+
+
+
+        }
+    }
+
+    function checkCollisionsWithGems1() {
+        // Check if there are more gems to collect
+        if (remainingGems >= 0) {
+            // Check if the player touches a gem
+            if (player.checkCollision(gem)) {
+
+                //player.updateScore();
+                //player.collect(gem);
+                //player.updateScore();
+                //player.updateScore(gem);
+
+                // Collect the gem
+                player.collect(gem);
+                // Decrease the number of gems still remaining
+                remainingGems -= 1;
+
+                player.updateScore();
+
+                // Check if there are gems to display yet
+                if (remainingGems > 0) {
+                    //player.collect(gem);
+
+                    // Display one of the remaining gems
+                    gem.replace();
+                    //remainingGems -= 1;
+                }
+
+            }
+
+
+
+        }
     }
 
 
