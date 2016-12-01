@@ -469,7 +469,21 @@ var Rock = function(x) {
 };
 
 Rock.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
+        Resources.get(this.sprite).naturalWidth * scaleFactor,
+        Resources.get(this.sprite).naturalHeight * scaleFactor);
+};
+
+var Life = function() {
+    this.x = 325;
+    this.y = 35;
+    this.sprite = 'images/Heart.png';
+}
+
+Life.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
+        Resources.get(this.sprite).naturalWidth * 0.6 * scaleFactor,
+        Resources.get(this.sprite).naturalHeight * 0.6 * scaleFactor);
 };
 
 
@@ -488,6 +502,8 @@ var player = new Player();
 var gem = new Gem();
 
 var allRocks = [new Rock(0), new Rock(202), new Rock(404)];
+
+var life = new Life();
 
 //var rock1 = new Rock(0);
 //var rock2 = new Rock(202);

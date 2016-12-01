@@ -37,6 +37,7 @@ var Engine = (function(global) {
         active = false,
         // Flag variable set to true if the player collided with an enemy, false otherwise
         crashed = false,
+        playerWon = false,
         // Initialize mouse click x and y coordinates
         mouseX = 0,
         mouseY = 0,
@@ -65,7 +66,8 @@ var Engine = (function(global) {
         originalWidth = 505,
         originalHeight = 606,
 
-        remainingGems = 3;
+        remainingGems = 3,
+        lives = 1;
         // Set a variable that calculates the scale factor for smaller
         // viewports. The game field fits in a canvas that has dimensions
         // equal to originalWidth and originalHeight. If the viewport is
@@ -127,10 +129,12 @@ var Engine = (function(global) {
         if (active) {
             win.requestAnimationFrame(main);
         } else {
-            if (crashed === true) {
-                renderAtGameOver();
-            } else {
+            if (playerWon) {
                 renderAfterWin();
+                //renderAtGameOver();
+            } else {
+                renderAtGameOver();
+                //renderAfterWin();
             }
         }
 
@@ -178,6 +182,7 @@ var Engine = (function(global) {
         // Set the active flag variable to true to start the game
         //availableGems = 3,
         remainingGems = 3;
+        lives = 1;
         active = true;
         crashed = false;
 
@@ -357,6 +362,8 @@ var Engine = (function(global) {
 
         //renderExtras();
         renderScore();
+
+        renderLife();
     }
 
     /* Call the render functions you have defined on your enemy and player
@@ -401,6 +408,11 @@ var Engine = (function(global) {
     }
 
 
+    function renderLife() {
+        life.render();
+    }
+
+
     /* Call all of the functions which may need to update entity's data.
      * This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data.
@@ -424,6 +436,7 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         if (player.checkIfWon()) {
+            playerWon = true;
             reset();
         }
 
@@ -452,7 +465,10 @@ var Engine = (function(global) {
     function checkCollisionsWithEnemies() {
         allEnemies.forEach(function(enemy) {
             if (player.checkCollision(enemy)) {
-                crashed = true;
+                //crashed = true;
+
+                lives -= 1;
+
                 reset();
                 //console.log("collision");
             }
@@ -563,7 +579,16 @@ var Engine = (function(global) {
         //     active = false;
         // }
 
+        if (playerWon === true) {
+            active = false;
+        } else if (lives === 0) {
+            crashed = true;
+            active = false;
+        }
+
+        crashed = true;
         active = false;
+
         //crashed = false;
 
         //
@@ -867,7 +892,8 @@ var Engine = (function(global) {
         'images/gem-blue.png',
         'images/gem-green.png',
         'images/gem-orange.png',
-        'images/Rock.png'
+        'images/Rock.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);      //init);
 
@@ -996,6 +1022,12 @@ var Engine = (function(global) {
         });
         gem.x /= scaleFactor;
         gem.y /= scaleFactor;
+        allRocks.forEach(function(rock) {
+            rock.x /= scaleFactor;
+            rock.y /= scaleFactor;
+        });
+        life.x /= scaleFactor;
+        life.y /= scaleFactor;
 
         var canvasWidth = calculateCanvasSize()[0];
         var canvasHeight = calculateCanvasSize()[1];
@@ -1033,6 +1065,12 @@ var Engine = (function(global) {
             enemy.dx *= scaleFactor;
             enemy.dy *= scaleFactor;
         });
+        allRocks.forEach(function(rock) {
+            rock.x *= scaleFactor;
+            rock.y *= scaleFactor;
+        });
+        life.x *= scaleFactor;
+        life.y *= scaleFactor;
 
         console.log("width: " + canvasWidth + " height: " + canvasHeight);
 
