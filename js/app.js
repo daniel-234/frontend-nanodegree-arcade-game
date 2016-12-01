@@ -74,7 +74,7 @@ Enemy.prototype.update = function(dt) {
  */
 Enemy.prototype.determineIfOut = function() {
     if (this.x > 610 * scaleFactor) {     // / 505 * aCanvasWidth) {
-        var that = this;
+        var that = this;                                                   //  |<--------   can it be a function?
         var pos = allEnemies.indexOf(that)
 
         //console.log(pos);
@@ -86,6 +86,20 @@ Enemy.prototype.determineIfOut = function() {
             allEnemies.splice(pos, 1);
         }, 0);
     }
+};
+
+Enemy.prototype.explode = function() {
+        var that = this;
+        var pos = allEnemies.indexOf(that)
+
+        //console.log(pos);
+        //allEnemies.push(new Enemy());
+        //allEnemies.splice(pos, 1);
+
+        // Use setTimeout to avoid flickering of enemy sprites.
+        setTimeout( function() {
+            allEnemies.splice(pos, 1);
+        }, 0);
 };
 
 /* Draw the enemy on the screen, required method for game
@@ -121,6 +135,7 @@ var Player = function() {
     this.effectiveHeight = 45 * scaleFactor;
     this.collected = [];
     this.score = 0;
+    this.lives = 1;
     this.sprite = 'images/char-boy.png';
     console.log("score: " + this.score);
 };
@@ -206,6 +221,7 @@ Player.prototype.update = function() {
     //}
 
     //console.log("Player pos: " + this.y);
+    console.log("lives: " + this.lives);
 };
 
 
@@ -474,13 +490,23 @@ Rock.prototype.render = function() {
         Resources.get(this.sprite).naturalHeight * scaleFactor);
 };
 
-var Life = function() {
+var Heart = function() {
     this.x = 325;
-    this.y = 35;
+    this.y = 108;    //35
+
+    // Offset of the effective image from the x position, necessary to detect collision
+    this.xOffset = 4 * 0.6 * scaleFactor;
+    // Offset of the effective image from the y position, necessary to detect collision
+    this.yOffset = 57 * 0.6 * scaleFactor;    //85;//40;               //50
+    // Effective width of the image, necessary to detect collision
+    this.effectiveWidth = 93 * 0.6 * scaleFactor;
+    // Effective height of the image, necessary to detect collision
+    this.effectiveHeight = 57 * 0.6 * scaleFactor;     //60
+
     this.sprite = 'images/Heart.png';
 }
 
-Life.prototype.render = function() {
+Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
         Resources.get(this.sprite).naturalWidth * 0.6 * scaleFactor,
         Resources.get(this.sprite).naturalHeight * 0.6 * scaleFactor);
@@ -503,7 +529,7 @@ var gem = new Gem();
 
 var allRocks = [new Rock(0), new Rock(202), new Rock(404)];
 
-var life = new Life();
+var heart = new Heart();
 
 //var rock1 = new Rock(0);
 //var rock2 = new Rock(202);

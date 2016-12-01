@@ -67,7 +67,8 @@ var Engine = (function(global) {
         originalHeight = 606,
 
         remainingGems = 3,
-        lives = 1;
+        remainingHearts = 1;
+        //lives = 1;
         // Set a variable that calculates the scale factor for smaller
         // viewports. The game field fits in a canvas that has dimensions
         // equal to originalWidth and originalHeight. If the viewport is
@@ -182,7 +183,8 @@ var Engine = (function(global) {
         // Set the active flag variable to true to start the game
         //availableGems = 3,
         remainingGems = 3;
-        lives = 1;
+        remainingHearts = 1;
+        //lives = 1;
         active = true;
         crashed = false;
 
@@ -363,7 +365,10 @@ var Engine = (function(global) {
         //renderExtras();
         renderScore();
 
-        renderLife();
+        if (remainingHearts > 0) {
+            renderHeart();
+        }
+
     }
 
     /* Call the render functions you have defined on your enemy and player
@@ -408,8 +413,8 @@ var Engine = (function(global) {
     }
 
 
-    function renderLife() {
-        life.render();
+    function renderHeart() {
+        heart.render();
     }
 
 
@@ -422,6 +427,7 @@ var Engine = (function(global) {
         checkCollisionsWithEnemies();
         checkCollisionsWithGems();
         checkCollisionWithStones();
+        checkCollisionWithHeart();
     }
 
     /* Update the data/properties related to the game objects (enemies
@@ -466,11 +472,22 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             if (player.checkCollision(enemy)) {
                 //crashed = true;
+                enemy.explode();
 
-                lives -= 1;
 
-                reset();
-                //console.log("collision");
+                if (player.lives > 1) {
+                    player.lives -= 1;
+                } else {
+                    reset();
+                }
+
+                // if (player.lives === 1) {
+                //     reset();
+                // } else {
+                //     player.lives -= 1;
+                // }
+
+                console.log("collision; lives: " + player.lives);
             }
         });
 
@@ -558,6 +575,22 @@ var Engine = (function(global) {
 
 
 
+    function checkCollisionWithHeart() {
+        if (player.checkCollision(heart)) {
+            console.log("heart");
+            console.log("remaining hearts: " + remainingHearts);
+            if (remainingHearts > 0) {
+                //enemy.explode();
+                player.lives += 1;
+                remainingHearts = 0;
+            }
+
+        };
+
+    }
+
+
+
     //
     //
     /* This function does nothing but it could have been a good place to
@@ -581,13 +614,13 @@ var Engine = (function(global) {
 
         if (playerWon === true) {
             active = false;
-        } else if (lives === 0) {
+        } else {  //if (player.lives === 0) {
             crashed = true;
             active = false;
         }
 
-        crashed = true;
-        active = false;
+        //crashed = true;
+        //active = false;
 
         //crashed = false;
 
@@ -1026,8 +1059,8 @@ var Engine = (function(global) {
             rock.x /= scaleFactor;
             rock.y /= scaleFactor;
         });
-        life.x /= scaleFactor;
-        life.y /= scaleFactor;
+        heart.x /= scaleFactor;
+        heart.y /= scaleFactor;
 
         var canvasWidth = calculateCanvasSize()[0];
         var canvasHeight = calculateCanvasSize()[1];
@@ -1069,8 +1102,8 @@ var Engine = (function(global) {
             rock.x *= scaleFactor;
             rock.y *= scaleFactor;
         });
-        life.x *= scaleFactor;
-        life.y *= scaleFactor;
+        heart.x *= scaleFactor;
+        heart.y *= scaleFactor;
 
         console.log("width: " + canvasWidth + " height: " + canvasHeight);
 
