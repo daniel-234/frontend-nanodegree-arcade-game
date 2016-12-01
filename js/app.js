@@ -139,7 +139,7 @@ Player.prototype.render = function() {
  * on the fact that the movement is either horizontal or vertical.
  */
 Player.prototype.handleInput = function(key) {
-    if (key === "left" && this.x > 0) {
+    if (key === "left" && this.x > 0) { //&& this.hasLeftPathFree()) {
         this.dx = -101 * scaleFactor;
     }
     if (key === "right" && this.x < 354 * scaleFactor) {
@@ -152,6 +152,10 @@ Player.prototype.handleInput = function(key) {
         this.dy = -83 * scaleFactor;
     }
 
+    if (this.hasNotPathFree()) {
+        this.dx = 0;
+        this.dy = 0;
+    }
 
 
     // if (key === "up") {
@@ -189,7 +193,7 @@ Player.prototype.update = function() {
     //     this.y = 400;
     // }
     //else {
-
+        console.log("step x: " + this.dx + "step y: " + this.dy);
 
         //this.playerScale = scaleFactor;
 
@@ -307,6 +311,70 @@ Player.prototype.updateScore = function() {
     console.log("score: " + this.score);
 };
 
+Player.prototype.isThereARock = function(obj) {
+    if ((this.y - 101) < obj.y) {
+        this.dy = 0;
+    }
+};
+
+Player.prototype.stayStill = function() {
+    this.dx = 0;
+    this.dy = 0;
+};
+
+
+Player.prototype.hasLeftPathFree1 = function() {
+    var isFree = true;
+    //for (var rockElem = 0; rockElem < allRocks.length; rockElem++) {
+        if ((this.x - 101) === 202 &&   //{//||    //allRocks[rockElem].x &&
+             (this.y) === 68) {  //allRocks[rockElem].y) {
+            //return true;
+            isFree = false;
+        }
+    //}
+    console.log(isFree);
+    return isFree;
+
+    //console.log()
+
+};
+
+
+Player.prototype.hasLeftPathFree = function(key) {
+    var isFree = true;
+    for (var rockElem = 0; rockElem < allRocks.length; rockElem++) {
+
+        if ((this.x - 101) === allRocks[rockElem].x &&      //202 &&   //{//||    //allRocks[rockElem].x &&
+             (this.y) === 68) {  //allRocks[rockElem].y) {
+            //return true;
+            isFree = false;
+        }
+    }
+    console.log(isFree);
+    return isFree;
+
+    //console.log()
+
+};
+
+
+Player.prototype.hasNotPathFree = function() {
+    var isNotFree = false;
+    for (var rockElem = 0; rockElem < allRocks.length; rockElem++) {
+        if ((this.x + this.dx) === allRocks[rockElem].x &&
+             (this.y + this.dy) === allRocks[rockElem].y + 12) {  //allRocks[rockElem].y) {      //68
+            //return true;
+            isNotFree = true;
+        }
+    }
+    console.log(isNotFree);
+    return isNotFree;
+
+    //console.log()
+
+};
+
+
 /* Gem class with x and y coordinates and sprite.
  * Gem image is selected randomly from an array of 3 values named
  * 'gemsSprites'. Its x and y coordinates can assume only certain values that
@@ -319,9 +387,9 @@ var Gem = function() {
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 1 * 0.4 * scaleFactor;
     // Offset of the effective image from the y position, necessary to detect collision
-    this.yOffset = 50 * 0.4 * scaleFactor;    //85;//40;
+    this.yOffset = 10 * 0.4 * scaleFactor;    //85;//40;
     // Effective width of the image, necessary to detect collision
-    this.effectiveWidth = 37 * 0.4 * scaleFactor;
+    this.effectiveWidth = 95 * 0.4 * scaleFactor;     //37
     // Effective height of the image, necessary to detect collision
     this.effectiveHeight = 40 * 0.4 * scaleFactor;
     // The image/sprite for our enemies, this uses a helper we've provided to easily load images
@@ -384,6 +452,29 @@ Gem.prototype.replace = function() {
 };
 
 
+var Rock = function(x) {
+    this.x = x * scaleFactor;
+    this.y = -27 * scaleFactor;     //56
+
+    // Offset of the effective image from the x position, necessary to detect collision
+    this.xOffset = 1 * scaleFactor;
+    // Offset of the effective image from the y position, necessary to detect collision
+    this.yOffset = 50 * scaleFactor;    //85;//40;               //50
+    // Effective width of the image, necessary to detect collision
+    this.effectiveWidth = 90 * scaleFactor;
+    // Effective height of the image, necessary to detect collision
+    this.effectiveHeight = 70 * scaleFactor;     //60
+
+    this.sprite = 'images/Rock.png';
+};
+
+Rock.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
+
+
 /* Instantiate the enemy objects.
  * Place all enemy objects in an array called allEnemies.
  * The game starts with 3 enemies entering the canvas.
@@ -396,7 +487,11 @@ var player = new Player();
 
 var gem = new Gem();
 
+var allRocks = [new Rock(0), new Rock(202), new Rock(404)];
 
+//var rock1 = new Rock(0);
+//var rock2 = new Rock(202);
+//var rock3 = new Rock(404);
 
 
 /* Get a random integer number between min (included) and max (included)

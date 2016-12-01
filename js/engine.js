@@ -350,6 +350,8 @@ var Engine = (function(global) {
             renderExtras();
         }
 
+        renderRocks();
+
         // Render the game entities (player and enemies)
         renderEntities();
 
@@ -377,6 +379,18 @@ var Engine = (function(global) {
 
     function renderExtras() {
         gem.render();
+        //rock1.render();
+        //rock2.render();
+        //rock3.render();
+    }
+
+    function renderRocks() {
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
+        //rock1.render();
+        //rock2.render();
+        //rock3.render();
     }
 
     function renderScore() {
@@ -395,6 +409,7 @@ var Engine = (function(global) {
         updateEntities(dt);
         checkCollisionsWithEnemies();
         checkCollisionsWithGems();
+        checkCollisionWithStones();
     }
 
     /* Update the data/properties related to the game objects (enemies
@@ -514,6 +529,15 @@ var Engine = (function(global) {
 
 
         }
+    }
+
+
+    function checkCollisionWithStones() {
+        allRocks.forEach(function(rock) {
+            if (player.checkCollision(rock)) {
+                console.log("rock");
+            }
+        });
     }
 
 
@@ -842,7 +866,8 @@ var Engine = (function(global) {
         'images/char-boy.png',
         'images/gem-blue.png',
         'images/gem-green.png',
-        'images/gem-orange.png'
+        'images/gem-orange.png',
+        'images/Rock.png'
     ]);
     Resources.onReady(init);      //init);
 
