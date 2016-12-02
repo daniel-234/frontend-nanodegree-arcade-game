@@ -362,7 +362,8 @@ var Engine = (function(global) {
                 // We're using our Resources helpers to refer to our images
                 // so that we get the benefits of caching these images, since
                 // we're using them over and over.
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.drawImage(Resources.get(rowImages[row]), col * 101 * scaleFactor, row * 83 * scaleFactor,
+                    Resources.get(rowImages[row]).naturalWidth * scaleFactor, Resources.get(rowImages[row]).naturalHeight * scaleFactor);
             }
         }
     }
