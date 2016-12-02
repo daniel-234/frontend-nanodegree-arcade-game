@@ -1135,6 +1135,8 @@ var Engine = (function(global) {
         });
         heart.x /= scaleFactor;
         heart.y /= scaleFactor;
+        key.x /= scaleFactor;
+        key.y /= scaleFactor;
 
         var canvasWidth = calculateCanvasSize()[0];
         var canvasHeight = calculateCanvasSize()[1];
@@ -1178,6 +1180,8 @@ var Engine = (function(global) {
         });
         heart.x *= scaleFactor;
         heart.y *= scaleFactor;
+        key.x *= scaleFactor;
+        key.y *= scaleFactor;
 
         console.log("width: " + canvasWidth + " height: " + canvasHeight);
 

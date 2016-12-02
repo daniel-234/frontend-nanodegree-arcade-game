@@ -520,8 +520,8 @@ Rock.prototype.render = function() {
 };
 
 var Heart = function() {
-    this.x = 323;
-    this.y = 25;  //108;  //35;    //108;    //35
+    this.x = 323 * scaleFactor;
+    this.y = 25 * scaleFactor;  //108;  //35;    //108;    //35
 
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 4 * 0.6 * scaleFactor;
@@ -543,8 +543,8 @@ Heart.prototype.render = function() {
 
 
 var Key = function() {
-    this.x = 123;
-    this.y = 25;  //32;  //108;
+    this.x = 123 * scaleFactor;
+    this.y = 25 * scaleFactor;  //32;  //108;
 
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 22 * 0.6 * scaleFactor;
