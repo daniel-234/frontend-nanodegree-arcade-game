@@ -409,7 +409,11 @@ var Engine = (function(global) {
         var fontSizeGameStart = 16 * scaleFactor;
         ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
         //ctx.fillStyle = "#fff";
-        ctx.fillText("Score: " + player.score, 20 * scaleFactor, 572 * scaleFactor);   //140, 352);
+        ctx.fillText("Score: " + player.score, 11 * scaleFactor, 572 * scaleFactor);   //140, 352);    20
+
+        ctx.fillText("Lives: " + player.lives + "/2", 112 * scaleFactor, 572 * scaleFactor);   //140, 352);
+
+        ctx.fillText("World: 1", 213 * scaleFactor, 572 * scaleFactor);   //140, 352);
     }
 
 
