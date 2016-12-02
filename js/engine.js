@@ -224,6 +224,8 @@ var Engine = (function(global) {
     function renderAtGameOver() {
         var fontSizeGameOver = 50 * scaleFactor;
         var fontSizeGameStart = 36 * scaleFactor;
+        var fontScore = 18 * scaleFactor;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (world === 1) {
             drawGameScene();
@@ -236,6 +238,10 @@ var Engine = (function(global) {
         //availableGems = 3;
         ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
         ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);   //140, 352);
+
+        ctx.font = fontScore + "pt" + " " + " Impact";
+        ctx.fillText("Score: " + player.score, 207, 460);   //140, 352);
+
         //availableGems = 3;
         availableGems.replaceGems();
 
@@ -257,6 +263,8 @@ var Engine = (function(global) {
     function renderAfterWin() {
         var fontSizeWin = 50 * scaleFactor;
         var fontSizeGameStart = 36 * scaleFactor;
+        var fontScore = 18 * scaleFactor;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGameScene2();
 
@@ -269,6 +277,9 @@ var Engine = (function(global) {
         //ctx.fillText("Start Again", 140, 352);
         ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
         ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);   //140, 352);
+
+        ctx.font = fontScore + "pt" + " " + " Impact";
+        ctx.fillText("Score: " + player.score, 207, 460);   //140, 352);
 
         availableGems.replaceGems();
         player.startAgain();
