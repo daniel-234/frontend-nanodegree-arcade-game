@@ -513,6 +513,20 @@ Heart.prototype.render = function() {
 };
 
 
+var Key = function() {
+    this.x =123;
+    this.y = 108;
+
+    this.sprite = 'images/Key.png';
+};
+
+Key.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
+        Resources.get(this.sprite).naturalWidth * 0.6 * scaleFactor,
+        Resources.get(this.sprite).naturalHeight * 0.6 * scaleFactor);
+};
+
+
 
 
 /* Instantiate the enemy objects.
@@ -530,6 +544,8 @@ var gem = new Gem();
 var allRocks = [new Rock(0), new Rock(202), new Rock(404)];
 
 var heart = new Heart();
+
+var key = new Key();
 
 //var rock1 = new Rock(0);
 //var rock2 = new Rock(202);

@@ -369,6 +369,8 @@ var Engine = (function(global) {
             renderHeart();
         }
 
+        renderKey();
+
     }
 
     /* Call the render functions you have defined on your enemy and player
@@ -419,6 +421,10 @@ var Engine = (function(global) {
 
     function renderHeart() {
         heart.render();
+    }
+
+    function renderKey() {
+        key.render();
     }
 
 
@@ -930,7 +936,8 @@ var Engine = (function(global) {
         'images/gem-green.png',
         'images/gem-orange.png',
         'images/Rock.png',
-        'images/Heart.png'
+        'images/Heart.png',
+        'images/Key.png'
     ]);
     Resources.onReady(init);      //init);
 
