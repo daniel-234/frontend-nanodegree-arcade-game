@@ -317,12 +317,13 @@ var Engine = (function(global) {
 
     /* Draw the game scenario (water, stone and grass tiles) in canvas.
      */
-    function drawGameScene1() {
+    function drawGameScene2() {
         // This array holds the relative URL to the image used for that
         // particular row of the game level
         var rowImages = [
                 'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
+                //'images/stone-block.png',   // Row 1 of 3 of stone
+                'images/water-block.png',
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
@@ -353,7 +354,13 @@ var Engine = (function(global) {
      */
     function render() {
         // Render the game level scenario
-        drawGameScene();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (world === 1) {
+            drawGameScene();
+        } else {
+            drawGameScene2();
+        }
+        //drawGameScene();
 
         if (remainingGems > 0) {
             renderExtras();
@@ -397,7 +404,10 @@ var Engine = (function(global) {
 
 
     function renderExtras() {
-        gem.render();
+        if (world === 2) {
+            gem.render();
+        }
+
         //rock1.render();
         //rock2.render();
         //rock3.render();
@@ -420,16 +430,23 @@ var Engine = (function(global) {
 
         ctx.fillText("Lives: " + player.lives + "/2", 112 * scaleFactor, 572 * scaleFactor);   //140, 352);
 
-        ctx.fillText("World: 1", 213 * scaleFactor, 572 * scaleFactor);   //140, 352);
+        ctx.fillText("World: " + world, 213 * scaleFactor, 572 * scaleFactor);   //140, 352);
     }
 
 
+    // move these two render functions to renderExtras?
     function renderHeart() {
-        heart.render();
+        if (world === 1) {
+            heart.render();
+        }
+
     }
 
     function renderKey() {
-        key.render();
+        if (world === 1) {
+            key.render();
+        }
+
     }
 
 
@@ -457,7 +474,7 @@ var Engine = (function(global) {
      * related to the object. Do your drawing in your render methods.
      */
     function updateEntities(dt) {
-        if (player.checkIfWon()) {
+        if (world === 2 && player.checkIfWon()) {
             playerWon = true;
             reset();
         }
@@ -494,8 +511,8 @@ var Engine = (function(global) {
                 if (player.lives > 1) {
                     player.lives -= 1;
                 } else {
-                    reset();
-                    //console.log("Ciao");
+                    //reset();
+                    console.log("Ciao");
                 }
 
                 // if (player.lives === 1) {
@@ -597,6 +614,7 @@ var Engine = (function(global) {
             console.log("heart");
             console.log("remaining hearts: " + remainingHearts);
             if (remainingHearts > 0) {
+                //ctx.clearRect(0, 0, canvas.width, canvas.height);
                 //enemy.explode();
                 player.lives += 1;
                 remainingHearts = 0;
@@ -614,7 +632,10 @@ var Engine = (function(global) {
             //console.log("world: " + world);
             if (world === 1) {
                 //enemy.explode();
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 world = 2;
+                player.setCoordinates();
+                allEnemies.reFill();
                 //remainingHearts = 0;
             }
 

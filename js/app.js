@@ -327,6 +327,14 @@ Player.prototype.updateScore = function() {
     console.log("score: " + this.score);
 };
 
+/* Set player coordinates back to their original values
+ */
+Player.prototype.setCoordinates = function() {
+    this.x = 202 * scaleFactor;
+    this.y = 400 * scaleFactor;
+};
+
+
 Player.prototype.isThereARock = function(obj) {
     if ((this.y - 101) < obj.y) {
         this.dy = 0;
