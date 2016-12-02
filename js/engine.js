@@ -67,7 +67,8 @@ var Engine = (function(global) {
         originalHeight = 606,
 
         remainingGems = 3,
-        remainingHearts = 1;
+        remainingHearts = 1,
+        world = 1;
         //lives = 1;
         // Set a variable that calculates the scale factor for smaller
         // viewports. The game field fits in a canvas that has dimensions
@@ -184,6 +185,7 @@ var Engine = (function(global) {
         //availableGems = 3,
         remainingGems = 3;
         remainingHearts = 1;
+        world = 1;
         //lives = 1;
         active = true;
         crashed = false;
@@ -369,7 +371,10 @@ var Engine = (function(global) {
             renderHeart();
         }
 
-        renderKey();
+        if (world === 1) {
+            renderKey();
+        }
+
 
     }
 
@@ -438,6 +443,7 @@ var Engine = (function(global) {
         checkCollisionsWithGems();
         checkCollisionWithStones();
         checkCollisionWithHeart();
+        checkCollisionWithKey();
     }
 
     /* Update the data/properties related to the game objects (enemies
@@ -489,6 +495,7 @@ var Engine = (function(global) {
                     player.lives -= 1;
                 } else {
                     reset();
+                    //console.log("Ciao");
                 }
 
                 // if (player.lives === 1) {
@@ -596,6 +603,23 @@ var Engine = (function(global) {
             }
 
         };
+
+    }
+
+
+    function checkCollisionWithKey() {
+        console.log("world before collecting key: " + world);
+        if (player.checkCollision(key)) {
+            console.log("key collected!");
+            //console.log("world: " + world);
+            if (world === 1) {
+                //enemy.explode();
+                world = 2;
+                //remainingHearts = 0;
+            }
+
+        };
+        console.log("world after collecting key: " + world);
 
     }
 

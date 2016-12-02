@@ -517,6 +517,15 @@ var Key = function() {
     this.x =123;
     this.y = 108;
 
+    // Offset of the effective image from the x position, necessary to detect collision
+    this.xOffset = 22 * 0.6 * scaleFactor;
+    // Offset of the effective image from the y position, necessary to detect collision
+    this.yOffset = 60 * 0.6 * scaleFactor;    //85;//40;               //50
+    // Effective width of the image, necessary to detect collision
+    this.effectiveWidth = 60 * 0.6 * scaleFactor;
+    // Effective height of the image, necessary to detect collision
+    this.effectiveHeight = 70 * 0.6 * scaleFactor;     //60
+
     this.sprite = 'images/Key.png';
 };
 
