@@ -476,9 +476,9 @@ Gem.prototype.replace = function() {
 };
 
 
-var Rock = function(x) {
+var Rock = function(x, y) {
     this.x = x * scaleFactor;
-    this.y = -27 * scaleFactor;     //56
+    this.y = y * scaleFactor;     //56
 
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 1 * scaleFactor;
@@ -558,7 +558,7 @@ var player = new Player();
 
 var gem = new Gem();
 
-var allRocks = [new Rock(0), new Rock(202), new Rock(404)];
+var allRocks = [new Rock(0, -27), new Rock(202, -27), new Rock(404, -27), new Rock(101, 305), new Rock(404, 388)];
 
 var heart = new Heart();
 

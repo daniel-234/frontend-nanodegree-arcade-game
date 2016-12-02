@@ -225,7 +225,11 @@ var Engine = (function(global) {
         var fontSizeGameOver = 50 * scaleFactor;
         var fontSizeGameStart = 36 * scaleFactor;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawGameScene();
+        if (world === 1) {
+            drawGameScene();
+        } else {
+            drawGameScene2();
+        }
         ctx.font = fontSizeGameOver + "pt" + " " + " Impact";
         ctx.fillText("Game Over", 0.208 * canvas.width, 0.432 * canvas.height);  //105, 262);
 
@@ -254,7 +258,8 @@ var Engine = (function(global) {
         var fontSizeWin = 50 * scaleFactor;
         var fontSizeGameStart = 36 * scaleFactor;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawGameScene();
+        drawGameScene2();
+
         ctx.font = fontSizeWin + "pt" + " " + " Impact";
         ctx.fillText("You Won!", 0.247 * canvas.width, 0.432 * canvas.height);
 
@@ -285,7 +290,9 @@ var Engine = (function(global) {
         // This array holds the relative URL to the image used for that
         // particular row of the game level
         var rowImages = [
-                'images/water-block.png',   // Top row is water
+                //'images/water-block.png',   // Top row is water
+                'images/grass-block.png',
+                //'images/stone-block.png',    // Top row for world 1 is stone
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
@@ -322,8 +329,8 @@ var Engine = (function(global) {
         // particular row of the game level
         var rowImages = [
                 'images/water-block.png',   // Top row is water
-                //'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/water-block.png',
+                'images/stone-block.png',   // Row 1 of 3 of stone
+                //'images/water-block.png',
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
@@ -511,7 +518,7 @@ var Engine = (function(global) {
                 if (player.lives > 1) {
                     player.lives -= 1;
                 } else {
-                    //reset();
+                    reset();
                     console.log("Ciao");
                 }
 
