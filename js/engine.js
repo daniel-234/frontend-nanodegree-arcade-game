@@ -559,7 +559,7 @@ var Engine = (function(global) {
 
 
             // Check if there are more gems to collect
-            if (remainingGems > 0) {
+            if (world === 2 && remainingGems > 0) {
                 // Decrease the number of gems still remaining
                 remainingGems -= 1;
                 // Collect the gem
@@ -584,7 +584,7 @@ var Engine = (function(global) {
 
     function checkCollisionsWithGems1() {
         // Check if there are more gems to collect
-        if (remainingGems >= 0) {
+        if (world === 2 && remainingGems >= 0) {
             // Check if the player touches a gem
             if (player.checkCollision(gem)) {
 

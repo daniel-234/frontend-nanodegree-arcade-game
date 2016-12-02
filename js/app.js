@@ -4,6 +4,7 @@ var enemyVerticalCoordinate = [60, 143, 226];
 var enemyHorizontalSteps = [120, 240, 360, 480];
 // Array that holds all the possible values of x positions for gems
 var gemsXCoordinate = [30, 132, 233, 334, 435];
+var gemsLastXCoordinate = 0;
 // Array that holds all the possible values of y positions for gems
 var gemsYCoordinate = [180, 263];
 // Array that holds the paths to the 3 gems sprites
@@ -405,8 +406,24 @@ Player.prototype.hasNotPathFree = function() {
  * can be randomly chosen from arrays 'gemsXCoordinate' and 'gemsYCoordinate'.
  */
 var Gem = function() {
-    this.x = gemsXCoordinate[getRandomInt(0, 4)] * scaleFactor;
+    // value of the x coordinate for gem
+    var xCoordinate; // = gemsXCoordinate[getRandomInt(0, 4)];
+    // Because gems can only occupy two vertical positions, make sure that
+    // they appear at different horizontal positions, so they don't ovrlap.
+    // Keep selecting a random number from the array until it is different
+    // from the last horizontal position of the gem.
+    do {
+        xCoordinate = gemsXCoordinate[getRandomInt(0, 4)];  //getRandomInt(0, 4);
+    }
+    while (xCoordinate === gemsLastXCoordinate);
+    //this.x = gemsXCoordinate[getRandomInt(0, 4)] * scaleFactor;
+    this.x = xCoordinate * scaleFactor;
     this.y = gemsYCoordinate[getRandomInt(0, 1)] * scaleFactor;
+
+    // Set last x coordinate for gem equal to the selected one
+    gemsLastXCoordinate = xCoordinate;
+
+
 
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 1 * 0.4 * scaleFactor;
@@ -427,6 +444,10 @@ var Gem = function() {
     this.gemType = selectGem(availableGems);
     this.sprite = 'images/gem-' + this.gemType + '.png';          //'images/Gem Blue.png';
     console.log('images/gem-' + this.gemType + '.png');
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + xCoordinate);
+    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + gemsLastXCoordinate);
+    console.log("x coordinate" + xCoordinate);
+    console.log("gem x coordinate" + gemsLastXCoordinate);
 };
 
 function selectGem(arr) {
