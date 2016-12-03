@@ -386,13 +386,29 @@ Player.prototype.hasLeftPathFree = function(key) {
 Player.prototype.hasNotPathFree = function() {
     var isNotFree = false;
     for (var rockElem = 0; rockElem < allRocks.length; rockElem++) {
-        if ((this.x + this.dx) === allRocks[rockElem].x &&
-             (this.y + this.dy) === allRocks[rockElem].y + 12) {  //allRocks[rockElem].y) {      //68
+            //console.log("x coordinates: Player x: " + Math.floor(this.x + this.dx));
+            //console.log("y coordinates: Player y: " + Math.floor(this.y + this.dy));
+            //console.log("x coordinates: Rock x: " + Math.floor(allRocks[rockElem].x));
+            //console.log("y coordinates: Rock y: " + Math.floor(allRocks[rockElem].y + (12 * scaleFactor)));
+        if (Math.floor(this.x + this.dx) === Math.floor(allRocks[rockElem].x) &&
+            Math.floor(this.y + this.dy) === Math.floor(allRocks[rockElem].y + (12 * scaleFactor))) {  //allRocks[rockElem].y) {      //68
+            console.log("x coordinates: Player x: " + Math.floor(this.x + this.dx));
+            console.log("y coordinates: Player y: " + Math.floor(this.y + this.dy));
+            console.log("x coordinates: Rock x: " + Math.floor(allRocks[rockElem].x));
+            console.log("y coordinates: Rock y: " + Math.floor(allRocks[rockElem].y + (12 * scaleFactor)));
+    // allRocks.forEach(function(rock) {
+    //     if (this.checkCollision(rock)) {
+             isNotFree = true;
+         }
+    // });
             //return true;
-            isNotFree = true;
-        }
+
     }
-    console.log(isNotFree);
+
+    console.log("x coordinates: Player x: " + (this.x + this.dx));
+    console.log("y coordinates: Player y: " + (this.y + this.dy));
+
+    console.log("variable :" + isNotFree);
     return isNotFree;
 
     //console.log()

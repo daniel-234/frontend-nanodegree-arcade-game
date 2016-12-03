@@ -621,7 +621,9 @@ var Engine = (function(global) {
     function checkCollisionWithStones() {
         allRocks.forEach(function(rock) {
             if (player.checkCollision(rock)) {
-                console.log("rock");
+                //console.log("player x: " + this.x + ", player y: " + this.y);
+                //console.log("rock x: " + rock.x + ", rock y: " + this.y);
+                console.log("COLLIDEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             }
         });
     }
@@ -645,9 +647,9 @@ var Engine = (function(global) {
 
 
     function checkCollisionWithKey() {
-        console.log("world before collecting key: " + world);
+        //console.log("world before collecting key: " + world);
         if (player.checkCollision(key)) {
-            console.log("key collected!");
+            //console.log("key collected!");
             //console.log("world: " + world);
             if (world === 1) {
                 //enemy.explode();
@@ -659,7 +661,7 @@ var Engine = (function(global) {
             }
 
         };
-        console.log("world after collecting key: " + world);
+        //console.log("world after collecting key: " + world);
 
     }
 
