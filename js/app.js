@@ -76,7 +76,7 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.determineIfOut = function() {
     if (this.x > 610 * scaleFactor) {     // / 505 * aCanvasWidth) {
         var that = this;                                                   //  |<--------   can it be a function?
-        var pos = allEnemies.indexOf(that)
+        var pos = allEnemies.indexOf(that);
 
         //console.log(pos);
         //allEnemies.push(new Enemy());
@@ -547,8 +547,17 @@ var Heart = function() {
     this.effectiveWidth = 93 * 0.6 * scaleFactor;
     // Effective height of the image, necessary to detect collision
     this.effectiveHeight = 57 * 0.6 * scaleFactor;     //60
+    this.theHeight = 56 * 0.6 * scaleFactor;
 
     this.sprite = 'images/Heart.png';
+
+    console.log("heart x offset BEFORE SCALING: " + this.xOffset);
+    console.log("heart y offset height BEFORE SCALING: " + this.yOffset);
+    console.log("heart effective width BEFORE SCALING: " + this.effectiveWidth);
+    console.log("heart effective height BEFORE SCALING: " + this.effectiveHeight);
+    console.log("heart effective height BEFORE SCALING: " + this.theHeight);
+    console.log("heart y BEFORE SCALING: " + this.y);
+
 }
 
 Heart.prototype.render = function() {

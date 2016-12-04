@@ -1124,22 +1124,46 @@ var Engine = (function(global) {
         // calling a function on player and enemy?
         player.x /= scaleFactor;
         player.y /= scaleFactor;
+        player.xOffset /= scaleFactor;
+        player.yOffset /= scaleFactor;
+        player.effectiveWidth /= scaleFactor;
+        player.effectiveHeight /= scaleFactor;
         allEnemies.forEach(function(enemy) {
             enemy.x /= scaleFactor;
             enemy.y /= scaleFactor;
             enemy.dx /= scaleFactor;
             enemy.dy /= scaleFactor;
+            enemy.xOffset /= scaleFactor;
+            enemy.yOffset /= scaleFactor;
+            enemy.effectiveWidth /= scaleFactor;
+            enemy.effectiveHeight /= scaleFactor;
         });
         gem.x /= scaleFactor;
         gem.y /= scaleFactor;
+        gem.xOffset /= scaleFactor;
+        gem.yOffset /= scaleFactor;
+        gem.effectiveWidth /= scaleFactor;
+        gem.effectiveHeight /= scaleFactor;
         allRocks.forEach(function(rock) {
             rock.x /= scaleFactor;
             rock.y /= scaleFactor;
+            rock.xOffset /= scaleFactor;
+            rock.yOffset /= scaleFactor;
+            rock.effectiveWidth /= scaleFactor;
+            rock.effectiveHeight /= scaleFactor;
         });
         heart.x /= scaleFactor;
         heart.y /= scaleFactor;
+        heart.xOffset /= scaleFactor;
+        heart.yOffset /= scaleFactor;
+        heart.effectiveWidth /= scaleFactor;
+        heart.effectiveHeight /= scaleFactor;
         key.x /= scaleFactor;
         key.y /= scaleFactor;
+        key.xOffset /= scaleFactor;
+        key.yOffset /= scaleFactor;
+        key.effectiveWidth /= scaleFactor;
+        key.effectiveHeight /= scaleFactor;
 
         var canvasWidth = calculateCanvasSize()[0];
         var canvasHeight = calculateCanvasSize()[1];
@@ -1169,24 +1193,55 @@ var Engine = (function(global) {
         // maybe calling a function on either payer and enemy is more appropriate?
         player.x *= scaleFactor;
         player.y *= scaleFactor;
+        player.xOffset *= scaleFactor;
+        player.yOffset *= scaleFactor;
+        player.effectiveWidth *= scaleFactor;
+        player.effectiveHeight *= scaleFactor;
         gem.x *= scaleFactor;
         gem.y *= scaleFactor;
+        gem.xOffset *= scaleFactor;
+        gem.yOffset *= scaleFactor;
+        gem.effectiveWidth *= scaleFactor;
+        gem.effectiveHeight *= scaleFactor;
         allEnemies.forEach(function(enemy) {
             enemy.x *= scaleFactor;
             enemy.y *= scaleFactor;
             enemy.dx *= scaleFactor;
             enemy.dy *= scaleFactor;
+            enemy.xOffset *= scaleFactor;
+            enemy.yOffset *= scaleFactor;
+            enemy.effectiveWidth *= scaleFactor;
+            enemy.effectiveHeight *= scaleFactor;
         });
         allRocks.forEach(function(rock) {
             rock.x *= scaleFactor;
             rock.y *= scaleFactor;
+            rock.xOffset *= scaleFactor;
+            rock.yOffset *= scaleFactor;
+            rock.effectiveWidth *= scaleFactor;
+            rock.effectiveHeight *= scaleFactor;
         });
         heart.x *= scaleFactor;
         heart.y *= scaleFactor;
+        heart.xOffset *= scaleFactor;
+        heart.yOffset *= scaleFactor;
+        heart.effectiveWidth *= scaleFactor;
+        heart.effectiveHeight *= scaleFactor;
         key.x *= scaleFactor;
         key.y *= scaleFactor;
+        key.xOffset *= scaleFactor;
+        key.yOffset *= scaleFactor;
+        key.effectiveWidth *= scaleFactor;
+        key.effectiveHeight *= scaleFactor;
 
         console.log("width: " + canvasWidth + " height: " + canvasHeight);
+
+        console.log("heart x offset AFTER SCALING: " + heart.xOffset);
+        console.log("heart y offset AFTER SCALING: " + heart.yOffset);
+        console.log("heart effective width AFTER SCALING: " + heart.effectiveWidth);
+        console.log("heart effective height AFTER SCALING: " + heart.effectiveHeight);
+        console.log("scale factor: " + scaleFactor);
+
 
         //player.updateIfResized();
 
