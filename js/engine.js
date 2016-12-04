@@ -133,6 +133,7 @@ var Engine = (function(global) {
         } else {
             if (playerWon) {
                 renderAfterWin();
+                playerWon = false;
                 //renderAtGameOver();
             } else {
                 renderAtGameOver();
