@@ -244,7 +244,9 @@ var Engine = (function(global) {
         ctx.fillText("Score: " + player.score, 190 * scaleFactor, 460 * scaleFactor);   //140, 352);
 
         //availableGems = 3;
-        availableGems.replaceGems();
+        //availableGems.replaceGems();
+
+        availableGems = ["blue", "green", "orange"];
 
         player = new Player();
 
@@ -287,9 +289,11 @@ var Engine = (function(global) {
         ctx.font = fontScore + "pt" + " " + " Impact";
         ctx.fillText("Score: " + player.score, 190 * scaleFactor, 460 * scaleFactor);   //140, 352);
 
-        availableGems.replaceGems();
+        //availableGems.replaceGems();
         //player.startAgain();
         //allEnemies.reFill();
+
+        availableGems = ["blue", "green", "orange"];
 
         player = new Player();
 
@@ -427,7 +431,7 @@ var Engine = (function(global) {
             enemy.determineIfOut();
         });
         // If there are less than 3 enemies in the array, insert a new one
-        allEnemies.checkNumberOfItems();
+        allEnemies.checkNumberOfItems(3, new Enemy());
         player.render();
     }
 

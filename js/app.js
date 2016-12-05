@@ -629,19 +629,22 @@ function getRandomInt(min, max) {
 /* Check that the number of items in the array is 3.
  * If the numer is less than 3, add a new enemy to the array.
  */
-Array.prototype.checkNumberOfItems = function() {
+Array.prototype.checkNumberOfItems = function(num, obj) {
     //console.log(this.length);
-    if (this.length < 3) {
-        this.push(new Enemy());
+    if (this.length < num) {
+        this.push(obj);
     }
 };
 
-Array.prototype.replaceGems = function() {
-    //console.log(this.length);
-    console.log("before: " + availableGems);
-    availableGems = ["blue", "green", "orange"];
-    console.log("after: " + availableGems);
-};
+// Array.prototype.replaceGems = function() {
+//     //console.log(this.length);
+//     console.log("before: " + availableGems);
+//     availableGems = ["blue", "green", "orange"];
+//     // this.push("blue");
+//     // this.push("green");
+//     // this.push("orange");
+//     console.log("after: " + availableGems);
+// };
 
 
 //////////////////////////////////////////////////////////////////////////
