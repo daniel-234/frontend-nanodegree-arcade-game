@@ -260,10 +260,10 @@ Player.prototype.checkIfWon = function() {
 
 /* After the game ended, if the user starts a new game,assign a new Player object to player
  */
-Player.prototype.startAgain = function() {
-    player = new Player();
-    //availableGems = ["blue", "green", "orange"];
-};
+// Player.prototype.startAgain = function() {
+//     player = new Player();
+//     //availableGems = ["blue", "green", "orange"];
+// };
 
 /* Check that there is no gap between the player and another object. If this condition is met,
  * there is a collision.
@@ -508,9 +508,12 @@ Gem.prototype.render = function() {
         Resources.get(this.sprite).naturalHeight * 0.4 * scaleFactor);
 };
 
-Gem.prototype.replace = function() {
-    gem = new Gem();
-};
+
+
+/////////////////////////////////////////////////////////
+// Gem.prototype.replace = function() {
+//     gem = new Gem();
+// };
 
 
 var Rock = function(x, y) {
@@ -640,9 +643,11 @@ Array.prototype.replaceGems = function() {
     console.log("after: " + availableGems);
 };
 
-Array.prototype.reFill = function() {
-    allEnemies = [new Enemy(), new Enemy(), new Enemy()];
-};
+
+//////////////////////////////////////////////////////////////////////////
+// Array.prototype.reFill = function() {
+//     allEnemies = [new Enemy(), new Enemy(), new Enemy()];
+// };
 
 
 /* This listens for key presses and sends the keys to your

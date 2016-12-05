@@ -241,13 +241,18 @@ var Engine = (function(global) {
         ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);   //140, 352);
 
         ctx.font = fontScore + "pt" + " " + " Impact";
-        ctx.fillText("Score: " + player.score, 200 * scaleFactor, 460 * scaleFactor);   //140, 352);
+        ctx.fillText("Score: " + player.score, 190 * scaleFactor, 460 * scaleFactor);   //140, 352);
 
         //availableGems = 3;
         availableGems.replaceGems();
 
-        player.startAgain();
-        allEnemies.reFill();
+        player = new Player();
+
+        //player.startAgain();
+        //allEnemies.reFill();
+
+
+        allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 
         //remainingGems = 3;
         //availableGems.replaceGems();
@@ -280,11 +285,15 @@ var Engine = (function(global) {
         ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);   //140, 352);
 
         ctx.font = fontScore + "pt" + " " + " Impact";
-        ctx.fillText("Score: " + player.score, 200 * scaleFactor, 460 * scaleFactor);   //140, 352);
+        ctx.fillText("Score: " + player.score, 190 * scaleFactor, 460 * scaleFactor);   //140, 352);
 
         availableGems.replaceGems();
-        player.startAgain();
-        allEnemies.reFill();
+        //player.startAgain();
+        //allEnemies.reFill();
+
+        player = new Player();
+
+        allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 
         //remainingGems = 3;
         //availableGems = ["blue", "green", "orange"];
@@ -574,7 +583,8 @@ var Engine = (function(global) {
                     //player.collect(gem);
 
                     // Display one of the remaining gems
-                    gem.replace();
+                    //gem.replace();
+                    gem = new Gem();
                 }
 
             }
@@ -657,8 +667,9 @@ var Engine = (function(global) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 world = 2;
                 player.setCoordinates();
-                allEnemies.reFill();
+                //allEnemies.reFill();
                 //remainingHearts = 0;
+                allEnemies = [new Enemy(), new Enemy(), new Enemy()];
             }
 
         };
