@@ -578,7 +578,7 @@ var Engine = (function(global) {
                 // Decrease the number of gems still remaining
                 remainingGems -= 1;
                 // Collect the gem
-                player.collect(gem);
+                player.collectGem(gem);
                 // Update the
                 player.updateScore();
 
