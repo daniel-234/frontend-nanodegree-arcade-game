@@ -1,6 +1,6 @@
-// Array to hold all the accepted values for the y coordinate of enemies
+// Array that holds all the accepted values for the y coordinate of enemies
 var enemyVerticalCoordinate = [60, 143, 226];
-// Array to hold all the possible values for horizontal speed of enemies
+// Array that holds all the possible values for horizontal speed of enemies
 var enemyHorizontalSteps = [120, 240, 360, 480];
 // Array that holds all the possible values of x positions for gems
 var gemsXCoordinate = [30, 132, 233, 334, 435];
@@ -19,7 +19,7 @@ var KEY_IMAGE_REDUCTION = 0.6;
 /* Enemies our player must avoid.
  * Each enemy has an x and y coordinate to place its sprite; an x and y offset
  * to detect the exact position of the image inside the sprite; an effective
- * width and height for the image inside the sprite and a sprit property to
+ * width and height for the image inside the sprite and a sprite property to
  * locate the image inside the images folder.
  * Variable 'scaleFactor' is used to take into account the viewport size.
  */
@@ -37,7 +37,7 @@ var Enemy = function() {
     // Offset of the effective image from the x position, necessary to detect collision
     this.xOffset = 25 * scaleFactor;
     // Offset of the effective image from the y position, necessary to detect collision
-    this.yOffset = 40 * scaleFactor;    //85;//40;
+    this.yOffset = 40 * scaleFactor;
     // Effective width of the image, necessary to detect collision
     this.effectiveWidth = 50 * scaleFactor;
     // Effective height of the image, necessary to detect collision
@@ -46,8 +46,8 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 };
 
-/* Update the enemy's position, required method for game
- * Parameter: dt, a time delta between ticks
+/* Update the enemy's position, required method for game.
+ * Parameter: dt, a time delta between ticks.
  */
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter which will ensure
@@ -56,13 +56,14 @@ Enemy.prototype.update = function(dt) {
     if (this.x <= 610 * scaleFactor) {
         this.x += this.dx * dt;
     }
+    // As the enemy exits canvas, it stops moving
     else {
         this.dx = 0;
     }
 };
 
-/* Determine if an instance of Enemy is gone outside of canvas (canvas width
- * is 606px). When it happens, take its index and remove that item from the
+/* Determine if an Enemy instance has gone outside of canvas.
+ * When it happens, take its index and remove that item from the
  * array by index position .
  */
 Enemy.prototype.determineIfOut = function() {
@@ -103,14 +104,12 @@ Enemy.prototype.render = function() {
  * and dy steps and sprite.
  * Player image is positioned at the bottom of the canvas as the game starts.
  * Its dx and dy steps are 0 as long as the user doesn't press any arrow keys.
- * The x and y offset are used to detect the exact position of the image inside
- * the sprite; an effective width and height for the image inside the sprite
- * and a sprit property to locate the image inside the images folder.
+ * The x and y offsets are used to detect the exact position of the image inside
+ * the sprite. A sprite property locates the image inside the images folder.
  * Variable 'scaleFactor' is used to take into account the viewport size.
  */
 var Player = function() {
-    // this.oldScale = scaleFactor;
-    // Starting x and y positions of player
+    // Starting x and y positions for player
     this.x = 202 * scaleFactor;
     this.y = 400 * scaleFactor;
     // Starting steps for player are zero; it reacts to user input
@@ -119,7 +118,7 @@ var Player = function() {
     // Offset of the effective image from the x position
     this.xOffset = 2 * scaleFactor;
     // Offset of the effective image from the y position
-    this.yOffset = 40 * scaleFactor;   //40;85;
+    this.yOffset = 40 * scaleFactor;
     // Effective width of the image; necessary to detect collision
     this.effectiveWidth = 96 * scaleFactor;
     // Effective height of the image; necessary to detect collision
@@ -151,19 +150,19 @@ Player.prototype.render = function() {
  * Variable 'scaleFactor' is used to take into account the viewport size.
  */
 Player.prototype.handleInput = function(key) {
-    // Check if the x coordinate of player is still inside canvas on the left
+    // Check if the player x coordinate is still inside canvas on the left
     if (key === 'left' && this.x > 0) {
         this.dx = -101 * scaleFactor;
     }
-    // Check if the x coordinate of player is still inside canvas on the right
+    // Check if the player x coordinate is still inside canvas on the right
     if (key === 'right' && this.x < 354 * scaleFactor) {
         this.dx = 101 * scaleFactor;
     }
-    // Check if the y coordinate of player is still inside canvas on the bottom
+    // Check if the player y coordinate is still inside canvas at the bottom
     if (key === 'down' && this.y < 400 * scaleFactor) {
         this.dy = 83 * scaleFactor;
     }
-    // Check if the y coordinate of player is still inside canvas on the top
+    // Check if the player y coordinate is still inside canvas at the top
     if (key === 'up' && this.y > 0) {
         this.dy = -83 * scaleFactor;
     }
@@ -179,14 +178,14 @@ Player.prototype.handleInput = function(key) {
  * at the beginning of the game. It gets a positive or negative value if the user
  * presses an arrow key. The step value is set back to zero immediately after
  * its value has been used to increment or decrement a player coordinate, to take into
- * account only a step movement for each key press.
+ * account only a step movement for each key pressed.
  */
 Player.prototype.update = function() {
     // Increment x and y positions by the given step
     this.x += this.dx;
     this.y += this.dy;
     // After step has been assigned to the x and y coordinates of player,
-    // change back their value to zero and wait for next user input
+    // change back their value to zero and wait for the next user input
     this.dx = 0;
     this.dy = 0;
 };
@@ -194,8 +193,9 @@ Player.prototype.update = function() {
 /* Determnine if the player has reached the water safely.
  */
 Player.prototype.checkIfWon = function() {
-    // Check if the y player coordinate is negative
+    // Check if the player y coordinate is negative
     if (this.y < 0) {
+        // Then the water has been reached
         return true;
     }
 };
@@ -212,9 +212,9 @@ Player.prototype.checkCollision = function(obj) {
     }
 };
 
-/* Collect a gem and insert it into the 'collected' array of player.
+/* Collect a gem and insert it into the player's collected' array property.
  * It is possible to collect only 3 gems, one for each type.
- * The gems types are listed in the 'availableGems' array. As the
+ * The gem types are listed in the 'availableGems' array. As the
  * player collects each of them, they are inserted into the 'collected'
  * array and removed from their original position inside 'availableGems'.
  */
@@ -228,7 +228,7 @@ Player.prototype.collectGem = function(obj) {
 };
 
 /* Update player score. To make things more interesting, each gem type
- * has a different value and will make the player score increment by a
+ * has a different value and will increment the player score by a
  * different amount.
  */
 Player.prototype.updateScore = function() {
@@ -254,7 +254,7 @@ Player.prototype.updateScore = function() {
         }
     }
 
-    // Assign the total score to the player score
+    // Assign the total score to the player score property
     this.score = playerScore;
 };
 
@@ -277,9 +277,9 @@ Player.prototype.hasNotPathFree = function() {
         // Check if the player x coordinate corresponds to the obstacle x coordinate
         if (Math.floor(this.x + this.dx) === Math.floor(allRocks[rockElem].x) &&
             // Check if the player y coordinate corresponds to the obstacle y coordinate;
-            // note that contrary of the x coordinate, even when the player is in the same
-            // tile as the obstacle, there is no exact match between their y value. That is
-            // why we need to take into account it and add 12 pixels to the obstacle y position
+            // note that contrary to the x coordinate, even when the player is in the same
+            // tile as the obstacle, there is no exact match between their y value. So we
+            // need to take into account it and add 12 pixels to the obstacle y position
             // (and scale it appropriately in case the viewport is resized)
             Math.floor(this.y + this.dy) === Math.floor(allRocks[rockElem].y + (12 * scaleFactor))) {
             // Set the flag variable to false if the path is not free
@@ -288,7 +288,6 @@ Player.prototype.hasNotPathFree = function() {
     }
     return isNotFree;
 };
-
 
 /* Gem class with x and y coordinates, offsets and size of the visible image
  * inside the sprite.
@@ -324,13 +323,13 @@ var Gem = function() {
     this.effectiveWidth = 95 * 0.4 * scaleFactor;
     // Effective height of the image, necessary to detect collision
     this.effectiveHeight = 40 * 0.4 * scaleFactor;
-    // Assign the type randomly selecting it from three given values, through the 'selectGem' function
+    // Assign the type by selecting it randomly from three given values, through the 'selectGem' function
     this.gemType = selectGem(availableGems);
     // The image/sprite for our enemies, this uses a helper we've provided to easily load images
     this.sprite = 'images/gem-' + this.gemType + '.png';
 };
 
-/* Draw the gems on the screen at positions x and y, scaled at 40% of its original size.
+/* Draw the gems on the screen at positions x and y, scaled at 40% of their original size.
  * Variable 'scaleFactor' is used to take into account the viewport size.
  */
 Gem.prototype.render = function() {
@@ -400,7 +399,7 @@ Heart.prototype.render = function() {
 
 /* Key class with x and y coordinates and the offsets and effective size of the visible
  * image inside the sprite.
- * Variable 'KEY_IMAGE_REDUCTION' is used to adapt the heart image in the game. Its
+ * Variable 'KEY_IMAGE_REDUCTION' is used to adapt the key image in the game. Its
  * size was too big to fit properly and it was thus reduced. Reduction affected not
  * only the rendering, but also all the variables related to the image visible inside
  * the sprite, to implement the visual effect of collision properly.
@@ -430,7 +429,7 @@ Key.prototype.render = function() {
 };
 
 /* Check that the number of items in the array is equal to the given number num.
- * If the numer is less than num, insert an object into the array.
+ * If the numer is less than num, insert an object obj into the array.
  */
 Array.prototype.checkNumberOfItems = function(num, obj) {
     //console.log(this.length);
@@ -470,7 +469,7 @@ function getRandomInt(min, max) {
  * The game starts with 3 enemies entering the canvas.
  */
 var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
-/* Instantiate the player object. There is only one player per game.
+/* Instantiate the player object. There is only one player in the game.
  */
 var player = new Player();
 /* Instantiate the gem object.

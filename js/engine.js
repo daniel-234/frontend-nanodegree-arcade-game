@@ -14,12 +14,12 @@
  * a little simpler to work with.
  */
 
-// Variable saleFactor keeps track of the proportion of the canvas size, when the
+// Variable scaleFactor keeps track of the proportion of the canvas size, when the
 // viewport dimensions change, in regard to its max dimensions, that are its
 // original ones
 var scaleFactor;
 
-/* Engine function that defines the canvas and a context and all the functions
+/* Engine function that defines the canvas, a context and all the functions
  * needed to play the game.
  */
 var Engine = (function(global) {
@@ -45,28 +45,28 @@ var Engine = (function(global) {
         // Initialize user touch x and y coordinates
         touchX = 0,
         touchY = 0,
-        // Variables that hold the offset of the player visible image center from its x and y
-        // coordinates; used when calculating the position of the user input by mouse or touch
+        // Variables that hold the offset of the visible player image center from its x and y
+        // coordinates; used when calculating the position of the user mouse or touch input
         // in canvas
         PLAYER_CENTER_OFFSET_X = 50,
         PLAYER_CENTER_OFFSET_Y = 107,
-        // Coordinates of the text 'Start game' that appearson the screen
+        // Coordinates of the text 'Start game' that appears on the screen
         TEXT_LEFT_X = 0.2871,
         TEXT_RIGHT_X = 0.71287,
         TEXT_UPPER_Y = 0.51485,
         TEXT_BOTTOM_Y = 0.5775,
         // Set canvas max width and max height for bigger viewports.
-        // These will be the maximum  dimensions for the canvas and they will be the reference
+        // These will be the maximum dimensions for the canvas and they will be the reference
         // for the canvas size in smaller viewports, where the program will calculate the
         // reduction factor for the new dimensions compared to the original ones and use
         // that value to redraw the canvas and scale it proportionally
         ORIGINAL_WIDTH = 505,
         ORIGINAL_HEIGHT = 606,
         // Variable that tracks the number of gems not yet collected by the player; set to 3
-        // when game starts, decreases every time the player picks one
+        // when game starts, decreases every time the player collects one
         remainingGems = 3,
         // Variable that tracks if the player has collected a heart to increase its lives.
-        // This version of the game only contains 1 available heart in world 1
+        // This version of the game only contains 1 available heart that is placed in world 1
         remainingHearts = 1,
         // Variable that keeps track of the game stage; there are 2 stages to finish the game
         world = 1;
@@ -77,8 +77,8 @@ var Engine = (function(global) {
     canvas.height = calculateCanvasSize()[1];
     // Set the viewport scale factor based on its comparison with canvas maximum size
     scaleFactor = calculateCanvasSize()[2];
-    // Variables that adapt the x and y coordinates of the text 'Start Game', that the
-    // user needs to click to start the game, to the canvas size
+    // x and y coordinates of the text 'Start Game', that the user needs to click
+    // to start the game
     var startTextInitialX = TEXT_LEFT_X * canvas.width;
     var startTextInitialY = TEXT_UPPER_Y * canvas.height;
     var startTextFinishingX = TEXT_RIGHT_X * canvas.width;
@@ -113,7 +113,7 @@ var Engine = (function(global) {
             if (playerWon) {
                 renderAfterWin();
                 // After the correct screen has been rendered, set the flag variable
-                // that checks if the hame is won back to false, ready for the next
+                // that checks if the player has won back to false, ready for the next
                 // game session
                 playerWon = false;
             } else {
@@ -143,8 +143,8 @@ var Engine = (function(global) {
         world = 1;
         // Set the active flag variable to true to start the game
         active = true;
-        // Set the flag variable that determines a collision with enemies
-        // to false as the game begins
+        // Set the flag variable that for collision with enemies
+        // to false
         crashed = false;
         // Set the lastTime variable that is required for the game loop
         lastTime = Date.now();
@@ -198,10 +198,10 @@ var Engine = (function(global) {
         var fontScore = 25 * scaleFactor;
         // Clear the context before drawing the final screen
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // If the player won, it was in stage 2; draw it
+        // The player won, so it was in stage 2; draw it
         drawGameScene2();
 
-        // Render the text after the game is finished
+        // Render the text after the game is won
         ctx.font = fontSizeWin + 'pt' + ' ' + ' Impact';
         ctx.fillText('You Won!', 0.247 * canvas.width, 0.432 * canvas.height);
 
@@ -240,8 +240,10 @@ var Engine = (function(global) {
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 // The drawImage function of the canvas' context element
-                // requires 3 parameters: the image to draw, the x coordinate
-                // to start drawing and the y coordinate to start drawing.
+                // requires 5 parameters: the image to draw, the x coordinate
+                // to start drawing, the y coordinate to start drawing,
+                // the width to draw the image in the destination canvas,
+                // the height to draw the image in the destination canvas.
                 // We're using our Resources helpers to refer to our images
                 // so that we get the benefits of caching these images, since
                 // we're using them over and over.
@@ -275,8 +277,10 @@ var Engine = (function(global) {
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 // The drawImage function of the canvas' context element
-                // requires 3 parameters: the image to draw, the x coordinate
-                // to start drawing and the y coordinate to start drawing.
+                // requires 5 parameters: the image to draw, the x coordinate
+                // to start drawing, the y coordinate to start drawing,
+                // the width to draw the image in the destination canvas,
+                // the height to draw the image in the destination canvas.
                 // We're using our Resources helpers to refer to our images
                 // so that we get the benefits of caching these images, since
                 // we're using them over and over.
@@ -291,10 +295,11 @@ var Engine = (function(global) {
     function render() {
         // Render the appropriate game level scenario
         renderScene();
-        // Draw the next gem if there are yet to be collected
+        // Draw the next gem if there is any to be collected
         if (remainingGems > 0) {
             renderGems();
         }
+        // Render stone obstacles
         renderRocks();
         // Render the game entities (player and enemies)
         renderEntities();
@@ -337,8 +342,8 @@ var Engine = (function(global) {
         });
     }
 
-    /* Render the score that appears in game, with the player score,
-     * lives and world it is in.
+    /* Render the score that appears in game and shows the player score, the number of
+     * lives and the world it is in.
      */
     function renderScore() {
         var fontSizeGameStart = 16 * scaleFactor;
@@ -428,7 +433,7 @@ var Engine = (function(global) {
         if (player.checkCollision(gem)) {
             // Check if there are more gems to collect
             if (world === 2 && remainingGems > 0) {
-                // In that case, ecrease the number of gems still remaining
+                // In that case, decrease the number of gems still remaining
                 remainingGems -= 1;
                 // Collect the gem
                 player.collectGem(gem);
@@ -451,7 +456,7 @@ var Engine = (function(global) {
             if (remainingHearts > 0) {
                 // Increment the player lives
                 player.lives += 1;
-                // There are not more hearts to collect
+                // There are no more hearts to collect
                 remainingHearts = 0;
             }
         };
@@ -472,12 +477,12 @@ var Engine = (function(global) {
         };
     }
 
-    /* Set the flag variable active to false so it stops the game from looping
+    /* Set the flag active variable to false so it stops the game from looping
      * until the user decides to start it again.
      * Once reset has been called, it can be for two reasons: if the flag variable
      * 'playerWon' has been set to true, the player has won, otherwise the game is
      * over because an enemy hit the player and the variable 'crashed' needs to be
-     * set to true to reveal the condition to other functions in the program.
+     * set to true.
      */
     function reset() {
         if (playerWon === true) {
@@ -492,17 +497,18 @@ var Engine = (function(global) {
      * clicks on the game field inside the canvas, the function detects
      * its distance from the player and decides which of the four main
      * directions has the greater distance from the player center.
-     * If the point is midway between two directions (like NW), it computes
+     * If the point is midway between two directions, like NW, it computes
      * the distance between it and the player and evaluates which coordinate
-     * is farther from the player image center.
+     * is farther from the player image center. If the farthes is N, moves
+     * the player upwards; if the farthest is W, moves the player to the left.
      */
     function mouseDown(e) {
         if(!e) {
             e = event;
         }
         e.preventDefault();
-        // Assign to clickOnStartX and clickOnStartY the x and y coordinates
-        // inside the canvas parent element, that is body.
+        // Assign to mouseX and mouseY the x and y coordinates inside the canvas
+        // parent element, that is body.
         // To get the x and y coordinates of the click event relative to the canvas,
         // we need to consider that the canvas element has an offset from its
         // parent element. To take that into account, subtract the left and top
@@ -512,23 +518,25 @@ var Engine = (function(global) {
 
         // Check if the game is in its active state
         if (active === false) {
+            // Check if the click was inside the text coordinates
             if (mouseX > startTextInitialX && mouseX < startTextFinishingX) {
                 if (mouseY > startTextInitialY && mouseY < startTextFinishingY) {
+                    // Start the game
                     playGame();
                 }
             }
         } else {
             // Check if the user clicks a point that has a horizontal distance from the
             // position of the effective center of the player greater than its vertical distance
-            // The player centre is located approximately 50px from its x coordinate and 85px
+            // The player centre is located approximately 50px from its x coordinate and 107px
             // from its y coordinate
             if (Math.abs(mouseX - (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) >
                 (Math.abs(mouseY - (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))))) {
-                // Check if the click is on the left of the player
+                // Check if the click was on the left of the player
                 if (mouseX <= (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) {
                     // Move the player to the left
                     player.handleInput('left');
-                // Check if the click is on the right of the player
+                // The click was on the right of the player
                 } else {
                     // Move the player to the right
                     player.handleInput('right');
@@ -537,11 +545,11 @@ var Engine = (function(global) {
             // Check if the user clicks a point that has a vertical distance from the
             // position of the effective center of the player greater than its horizontal distance
             else {
-                // Check if the click is on the bottom of the player
+                // Check if the click was on the bottom of the player
                 if (mouseY >= (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))) {
                     // Move the player down
                     player.handleInput('down');
-                // Check if the click is on the top of the player
+                // The click was on the top of the player
                 } else {
                     // Move the player up
                     player.handleInput('up');
@@ -551,10 +559,10 @@ var Engine = (function(global) {
     }
 
     /* Listen for a touch from the user to move the player. When the user
-     * touches on the game field inside the canvas, the function detects
+     * touches the game field inside the canvas on a touch device, the function detects
      * its distance from the player and decides which of the four main
      * directions has the greater distance from the player center.
-     * If the point is midway between two directions (like NW), it computes
+     * If the point is midway between two directions, like NW, it computes
      * the distance between it and the player and evaluates which coordinate
      * is farther from the player image center.
      */
@@ -563,8 +571,8 @@ var Engine = (function(global) {
             e = event;
         }
         e.preventDefault();
-        // Assign to clickOnStartX and clickOnStartY the x and y coordinates
-        // inside the canvas parent element, that is body.
+        // Assign to touchX and touchY the x and y coordinates inside the canvas
+        // parent element, that is body.
         // To get the x and y coordinates of the click event relative to the canvas,
         // we need to consider that the canvas element has an offset from its
         // parent element. To take that into account, subtract the left and top
@@ -574,7 +582,7 @@ var Engine = (function(global) {
 
         // Check if the game is in its active state
         if (active === false) {
-
+            // Check if the touch event coordinates were inside the text coordinates
             if (touchX > startTextInitialX && touchX < startTextFinishingX) {
                 if (touchY > startTextInitialY && touchY < startTextFinishingY) {
                     playGame();
@@ -587,11 +595,11 @@ var Engine = (function(global) {
             // and 107px from its y coordinate
             if (Math.abs(touchX - (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) >
                 (Math.abs(touchY - (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))))) {
-                // Check if the click is on the left of the player
+                // Check if the click was on the left of the player
                 if (touchX <= (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) {
                     // Move the player to the left
                     player.handleInput('left');
-                // Check if the click is on the right of the player
+                // Check if the click was on the right of the player
                 } else {
                     // Move the player to the right
                     player.handleInput('right');
@@ -600,11 +608,11 @@ var Engine = (function(global) {
             // Check if the user clicks a point that has a vertical distance from the
             // position of the effective center of the player greater than its horizontal distance
             else {
-                // Check if the click is on the bottom of the player
+                // Check if the click was on the bottom of the player
                 if (touchY >= (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))) {
                     // Move the player down
                     player.handleInput('down');
-                // Check if the click is on the top of the player
+                // Check if the click was on the top of the player
                 } else {
                     // Move the player up
                     player.handleInput('up');
@@ -624,7 +632,7 @@ var Engine = (function(global) {
         // Set canvas and scale values
         var canvasWidth = 0,
             canvasHeight = 0,
-            // The scale values are the ratio of a new viewport size
+            // The scale values are the ratio between the new viewport size
             // and the old one
             scaleHeight = 0,
             scaleWidth = 0;
@@ -642,14 +650,13 @@ var Engine = (function(global) {
             canvasHeight = ORIGINAL_HEIGHT * scaleFactor;
             canvasWidth = ORIGINAL_WIDTH * scaleFactor;
         } else {
-            // If nothing changes, keep everything unchanged
+            // If the viewport size doesn't change, keep everything unchanged
             scaleFactor = 1;
             canvasHeight = ORIGINAL_HEIGHT;
             canvasWidth = ORIGINAL_WIDTH;
         }
 
         return [canvasWidth, canvasHeight, scaleFactor];
-
     }
 
     /* When called, scale back every entity property to its maximum
@@ -657,24 +664,24 @@ var Engine = (function(global) {
      * size values and scale properties back to the new scale factor.
      */
     function adaptToNewViewportSize() {
-        // Set back property values to their max value
+        // Set property values back to their max value
         scaleUp();
         // Assign the new values to canvas and scale factor
         canvas.width = calculateCanvasSize()[0];
         canvas.height = calculateCanvasSize()[1];
         scaleFactor = calculateCanvasSize()[2];
-        // Use scaleFactor here
+        // Scale appropriately the text to start playing
         startTextInitialX = TEXT_LEFT_X * canvas.width;
         startTextInitialY = TEXT_UPPER_Y * canvas.height;
         startTextFinishingX = TEXT_RIGHT_X * canvas.width;
         startTextFinishingY = TEXT_BOTTOM_Y * canvas.height;
-        // Scale everything according to the new viewport size
+        // Scale every entity according to the new viewport size
         scaleDown();
 
         init();
     }
 
-    /* Apply new scale factor to every entity property coordinate
+    /* Apply the new scale factor to every entity property coordinate
      * that makes use of it.
      * Used to set back each property to its original value (the one
      * it would take if canvas was at its max size). This is a necessary
@@ -725,7 +732,7 @@ var Engine = (function(global) {
         key.effectiveHeight /= scaleFactor;
     }
 
-    /* Apply new scale factor to every entity property coordinate
+    /* Apply the new scale factor to every entity property coordinate
      * that makes use of it.
      * After each property has been set back to its orginal value,
      * this function is used to scale it according to the new
