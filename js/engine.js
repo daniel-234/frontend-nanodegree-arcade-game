@@ -129,8 +129,8 @@ var Engine = (function(global) {
         // Draw the scene for the first stage of game
         drawGameScene();
         var fontSize = 36 * scaleFactor;
-        ctx.font = fontSize + "pt" + " " + "Impact";
-        ctx.fillText("Start Game", startTextInitialX, startTextFinishingY);
+        ctx.font = fontSize + 'pt' + ' ' + 'Impact';
+        ctx.fillText('Start Game', startTextInitialX, startTextFinishingY);
     }
 
     /* Set the conditions for the game to start and call its main function.
@@ -162,17 +162,17 @@ var Engine = (function(global) {
         renderScene();
 
         // Render the text after the game is finished
-        ctx.font = fontSizeGameOver + "pt" + " " + " Impact";
-        ctx.fillText("Game Over", 0.208 * canvas.width, 0.432 * canvas.height);
+        ctx.font = fontSizeGameOver + 'pt' + ' ' + ' Impact';
+        ctx.fillText('Game Over', 0.208 * canvas.width, 0.432 * canvas.height);
 
-        ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
-        ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);
+        ctx.font = fontSizeGameStart + 'pt' + ' ' + ' Impact';
+        ctx.fillText('Start Again', startTextInitialX, startTextFinishingY);
 
-        ctx.font = fontScore + "pt" + " " + " Impact";
-        ctx.fillText("Score: " + player.score, 190 * scaleFactor, 460 * scaleFactor);
+        ctx.font = fontScore + 'pt' + ' ' + ' Impact';
+        ctx.fillText('Score: ' + player.score, 190 * scaleFactor, 460 * scaleFactor);
 
         // Set extras and entities to their original values
-        availableGems = ["blue", "green", "orange"];
+        availableGems = ['blue', 'green', 'orange'];
         player = new Player();
         allEnemies = [new Enemy(), new Enemy(), new Enemy()];
     }
@@ -202,17 +202,17 @@ var Engine = (function(global) {
         drawGameScene2();
 
         // Render the text after the game is finished
-        ctx.font = fontSizeWin + "pt" + " " + " Impact";
-        ctx.fillText("You Won!", 0.247 * canvas.width, 0.432 * canvas.height);
+        ctx.font = fontSizeWin + 'pt' + ' ' + ' Impact';
+        ctx.fillText('You Won!', 0.247 * canvas.width, 0.432 * canvas.height);
 
-        ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
-        ctx.fillText("Start Again", startTextInitialX, startTextFinishingY);
+        ctx.font = fontSizeGameStart + 'pt' + ' ' + ' Impact';
+        ctx.fillText('Start Again', startTextInitialX, startTextFinishingY);
 
-        ctx.font = fontScore + "pt" + " " + " Impact";
-        ctx.fillText("Score: " + player.score, 190 * scaleFactor, 460 * scaleFactor);
+        ctx.font = fontScore + 'pt' + ' ' + ' Impact';
+        ctx.fillText('Score: ' + player.score, 190 * scaleFactor, 460 * scaleFactor);
 
         // Set extras and entities to their original values
-        availableGems = ["blue", "green", "orange"];
+        availableGems = ['blue', 'green', 'orange'];
         player = new Player();
         allEnemies = [new Enemy(), new Enemy(), new Enemy()];
     }
@@ -342,10 +342,10 @@ var Engine = (function(global) {
      */
     function renderScore() {
         var fontSizeGameStart = 16 * scaleFactor;
-        ctx.font = fontSizeGameStart + "pt" + " " + " Impact";
-        ctx.fillText("Score: " + player.score, 11 * scaleFactor, 572 * scaleFactor);
-        ctx.fillText("Lives: " + player.lives + "/2", 112 * scaleFactor, 572 * scaleFactor);
-        ctx.fillText("World: " + world, 213 * scaleFactor, 572 * scaleFactor);
+        ctx.font = fontSizeGameStart + 'pt' + ' ' + ' Impact';
+        ctx.fillText('Score: ' + player.score, 11 * scaleFactor, 572 * scaleFactor);
+        ctx.fillText('Lives: ' + player.lives + '/2', 112 * scaleFactor, 572 * scaleFactor);
+        ctx.fillText('World: ' + world, 213 * scaleFactor, 572 * scaleFactor);
     }
 
     /* Render the heart if the game is in stage 1 and it has not been collected yet.
@@ -527,11 +527,11 @@ var Engine = (function(global) {
                 // Check if the click is on the left of the player
                 if (mouseX <= (player.x + (playerCenterOffsetX * scaleFactor))) {
                     // Move the player to the left
-                    player.handleInput("left");
+                    player.handleInput('left');
                 // Check if the click is on the right of the player
                 } else {
                     // Move the player to the right
-                    player.handleInput("right");
+                    player.handleInput('right');
                 }
             }
             // Check if the user clicks a point that has a vertical distance from the
@@ -540,11 +540,11 @@ var Engine = (function(global) {
                 // Check if the click is on the bottom of the player
                 if (mouseY >= (player.y + (playerCenterOffsetY * scaleFactor))) {
                     // Move the player down
-                    player.handleInput("down");
+                    player.handleInput('down');
                 // Check if the click is on the top of the player
                 } else {
                     // Move the player up
-                    player.handleInput("up");
+                    player.handleInput('up');
                 }
             }
         }
@@ -590,11 +590,11 @@ var Engine = (function(global) {
                 // Check if the click is on the left of the player
                 if (touchX <= (player.x + (playerCenterOffsetX * scaleFactor))) {
                     // Move the player to the left
-                    player.handleInput("left");
+                    player.handleInput('left');
                 // Check if the click is on the right of the player
                 } else {
                     // Move the player to the right
-                    player.handleInput("right");
+                    player.handleInput('right');
                 }
             }
             // Check if the user clicks a point that has a vertical distance from the
@@ -603,11 +603,11 @@ var Engine = (function(global) {
                 // Check if the click is on the bottom of the player
                 if (touchY >= (player.y + (playerCenterOffsetY * scaleFactor))) {
                     // Move the player down
-                    player.handleInput("down");
+                    player.handleInput('down');
                 // Check if the click is on the top of the player
                 } else {
                     // Move the player up
-                    player.handleInput("up");
+                    player.handleInput('up');
                 }
             }
         }
@@ -778,13 +778,13 @@ var Engine = (function(global) {
 
     // Listen for user actions
     // Listen for a touch input by the user on canvas when game is running
-    canvas.addEventListener("mousedown", mouseDown, false);
+    canvas.addEventListener('mousedown', mouseDown, false);
     // Listen for a mouse click by the user on canvas when game is running
-    canvas.addEventListener("touchdown", touchDown, false);
+    canvas.addEventListener('touchdown', touchDown, false);
     // Listen for viewport resize
-    window.addEventListener("resize", adaptToNewViewportSize, false);
+    window.addEventListener('resize', adaptToNewViewportSize, false);
     // Listen for change in display orientation on mobile devices
-    window.addEventListener("orientationchange", adaptToNewViewportSize, false);
+    window.addEventListener('orientationchange', adaptToNewViewportSize, false);
 
     // Load all of the images we know we're going to need to draw our game level.
     // Then set init as the callback method, so that when all of these images are

@@ -9,7 +9,7 @@ var gemsLastXCoordinate = 0;
 // Array that holds all the possible values of y positions for gems
 var gemsYCoordinate = [180, 263];
 // Array that holds the colors of the gems that it is possible to collect
-var availableGems = ["blue", "green", "orange"];
+var availableGems = ['blue', 'green', 'orange'];
 // Variable that defines the percentage at which heart size will be considered in game
 var heartImageReduction = 0.6;
 // Variable that defines the percentage at which key size will be considered in game
@@ -152,19 +152,19 @@ Player.prototype.render = function() {
  */
 Player.prototype.handleInput = function(key) {
     // Check if the x coordinate of player is still inside canvas on the left
-    if (key === "left" && this.x > 0) {
+    if (key === 'left' && this.x > 0) {
         this.dx = -101 * scaleFactor;
     }
     // Check if the x coordinate of player is still inside canvas on the right
-    if (key === "right" && this.x < 354 * scaleFactor) {
+    if (key === 'right' && this.x < 354 * scaleFactor) {
         this.dx = 101 * scaleFactor;
     }
     // Check if the y coordinate of player is still inside canvas on the bottom
-    if (key === "down" && this.y < 400 * scaleFactor) {
+    if (key === 'down' && this.y < 400 * scaleFactor) {
         this.dy = 83 * scaleFactor;
     }
     // Check if the y coordinate of player is still inside canvas on the top
-    if (key === "up" && this.y > 0) {
+    if (key === 'up' && this.y > 0) {
         this.dy = -83 * scaleFactor;
     }
 
@@ -239,16 +239,16 @@ Player.prototype.updateScore = function() {
     // Loop through the array holding the gems collected by the player
     for (var elem = 0; elem < this.collected.length; elem++) {
         // Check if the current gem is blue
-        if (this.collected[elem] === "blue") {
+        if (this.collected[elem] === 'blue') {
             // Assign it a score of 15 points
             blueScore = 15;
             // Assign this points to the total score
             playerScore += blueScore;
-        } else if (this.collected[elem] === "green") {
+        } else if (this.collected[elem] === 'green') {
             greenScore = 20;
             playerScore += greenScore;
         }
-        if (this.collected[elem] === "orange") {
+        if (this.collected[elem] === 'orange') {
             orangeScore = 25;
             playerScore += orangeScore;
         }
@@ -443,7 +443,7 @@ Array.prototype.checkNumberOfItems = function(num, obj) {
  */
 function selectGem(arr) {
     // Declare an empty string variable and a variable to hold the argument array length
-    var gem = "",
+    var gem = '',
         len = arr.length;
     var rand;
     // Check if the length of the argument array is greater than zero
