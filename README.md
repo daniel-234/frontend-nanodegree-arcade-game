@@ -7,7 +7,15 @@ For detailed instructions on how to get started, check out this [guide](https://
 
 ## Getting Started
 
-To view the website, download a copy of the project to your local machine and open the file index.html with your browser.
+To play the game, fork the repository or clone or download it to your local machine and open the file index.html with your browser.
+
+You can play the game in your personal computer or in any mobile device of your choice. You can interact with the player using your keyboard arrows, a mouse or touching the screen of a touch enabled device.
+The purpose of the game is for the player to reach the water, that can be found in the second stage. To reach that stage, the player must collect a key found in the first stage, trying to avoid the bugs that cross its path.
+Apart from taking the key and reaching the water, that is the minimum requirement to win the game, the player can collect the heart in the first stage and thus increase its lives (it starts with 1 life and can take another one) and it can collect gems in stage 2 to increment its points. There are three gems in the game and they come in different colors and deliver different points. The maximum score that can be reached is 60 points.
+
+To start the game, click with your mouse or touch the text 'Start Game'. The game starts with the player at the bottom of the screen and it must cross a congested and dangerous road to grab the key. There are some rocks through the path that can't be crossed, so move around them.
+
+To move the player, you can use your keyboard arrows or you can point in the direction you want to move to, but be careful because you can't cross stone obstacles. To move the player touching the screen or with a click, press a point around the player. An algorithm detects the farthest direction around the player image and moves it one step towards it accordingly.
 
 ## Built With
 
@@ -23,8 +31,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* I used some lines of code from this answer in Stackoverflow to avoid image flickering as the enemy sprites moved along the canvas
-  [Image flickering in canvas](http://stackoverflow.com/questions/19619512/image-flickering-in-canvas)
+* I used some lines of code from this answer in Stackoverflow to avoid image flickering as the enemy sprites moved along the canvas - [Image flickering in canvas](http://stackoverflow.com/questions/19619512/image-flickering-in-canvas)
 * Thanks to this answer on Stackoverflow I have been able to stop the game execution when a specific event occurs (in my case the player either win or lose) - [Can't stop requestAnimationFrame Javascript/HTML5 canvas](http://stackoverflow.com/questions/19449219/cant-stop-requestanimationframe-javascript-html5-canvas)
 * I used some of this code to get the coordinates of a mouse click on the canvas element - [Get the coordinates of a mouse click on Canvas in JavaScript](http://miloq.blogspot.it/2011/05/coordinates-mouse-click-canvas.html)
 * The algorithm I used to detect collision between player and enemies - [2D collision detection](https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection)
