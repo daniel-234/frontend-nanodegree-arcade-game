@@ -48,20 +48,20 @@ var Engine = (function(global) {
         // Variables that hold the offset of the player visible image center from its x and y
         // coordinates; used when calculating the position of the user input by mouse or touch
         // in canvas
-        playerCenterOffsetX = 50,
-        playerCenterOffsetY = 107,
+        PLAYER_CENTER_OFFSET_X = 50,
+        PLAYER_CENTER_OFFSET_Y = 107,
         // Coordinates of the text 'Start game' that appearson the screen
-        textLeftX = 0.2871,
-        textRightX = 0.71287,
-        textUpperY = 0.51485,
-        textBottomY = 0.5775,
+        TEXT_LEFT_X = 0.2871,
+        TEXT_RIGHT_X = 0.71287,
+        TEXT_UPPER_Y = 0.51485,
+        TEXT_BOTTOM_Y = 0.5775,
         // Set canvas max width and max height for bigger viewports.
         // These will be the maximum  dimensions for the canvas and they will be the reference
         // for the canvas size in smaller viewports, where the program will calculate the
         // reduction factor for the new dimensions compared to the original ones and use
         // that value to redraw the canvas and scale it proportionally
-        originalWidth = 505,
-        originalHeight = 606,
+        ORIGINAL_WIDTH = 505,
+        ORIGINAL_HEIGHT = 606,
         // Variable that tracks the number of gems not yet collected by the player; set to 3
         // when game starts, decreases every time the player picks one
         remainingGems = 3,
@@ -79,10 +79,10 @@ var Engine = (function(global) {
     scaleFactor = calculateCanvasSize()[2];
     // Variables that adapt the x and y coordinates of the text 'Start Game', that the
     // user needs to click to start the game, to the canvas size
-    var startTextInitialX = textLeftX * canvas.width;
-    var startTextInitialY = textUpperY * canvas.height;
-    var startTextFinishingX = textRightX * canvas.width;
-    var startTextFinishingY = textBottomY * canvas.height;
+    var startTextInitialX = TEXT_LEFT_X * canvas.width;
+    var startTextInitialY = TEXT_UPPER_Y * canvas.height;
+    var startTextFinishingX = TEXT_RIGHT_X * canvas.width;
+    var startTextFinishingY = TEXT_BOTTOM_Y * canvas.height;
     // Add canvas to the DOM
     doc.body.appendChild(canvas);
 
@@ -522,10 +522,10 @@ var Engine = (function(global) {
             // position of the effective center of the player greater than its vertical distance
             // The player centre is located approximately 50px from its x coordinate and 85px
             // from its y coordinate
-            if (Math.abs(mouseX - (player.x + (playerCenterOffsetX * scaleFactor))) >
-                (Math.abs(mouseY - (player.y + (playerCenterOffsetY * scaleFactor))))) {
+            if (Math.abs(mouseX - (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) >
+                (Math.abs(mouseY - (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))))) {
                 // Check if the click is on the left of the player
-                if (mouseX <= (player.x + (playerCenterOffsetX * scaleFactor))) {
+                if (mouseX <= (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) {
                     // Move the player to the left
                     player.handleInput('left');
                 // Check if the click is on the right of the player
@@ -538,7 +538,7 @@ var Engine = (function(global) {
             // position of the effective center of the player greater than its horizontal distance
             else {
                 // Check if the click is on the bottom of the player
-                if (mouseY >= (player.y + (playerCenterOffsetY * scaleFactor))) {
+                if (mouseY >= (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))) {
                     // Move the player down
                     player.handleInput('down');
                 // Check if the click is on the top of the player
@@ -585,10 +585,10 @@ var Engine = (function(global) {
             // position of the effective center of the player greater than its vertical distance.
             // The center of the visible player is located approximately 50px from its x coordinate
             // and 107px from its y coordinate
-            if (Math.abs(touchX - (player.x + (playerCenterOffsetX * scaleFactor))) >
-                (Math.abs(touchY - (player.y + (playerCenterOffsetY * scaleFactor))))) {
+            if (Math.abs(touchX - (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) >
+                (Math.abs(touchY - (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))))) {
                 // Check if the click is on the left of the player
-                if (touchX <= (player.x + (playerCenterOffsetX * scaleFactor))) {
+                if (touchX <= (player.x + (PLAYER_CENTER_OFFSET_X * scaleFactor))) {
                     // Move the player to the left
                     player.handleInput('left');
                 // Check if the click is on the right of the player
@@ -601,7 +601,7 @@ var Engine = (function(global) {
             // position of the effective center of the player greater than its horizontal distance
             else {
                 // Check if the click is on the bottom of the player
-                if (touchY >= (player.y + (playerCenterOffsetY * scaleFactor))) {
+                if (touchY >= (player.y + (PLAYER_CENTER_OFFSET_Y * scaleFactor))) {
                     // Move the player down
                     player.handleInput('down');
                 // Check if the click is on the top of the player
@@ -631,21 +631,21 @@ var Engine = (function(global) {
 
         // The canvas size can change because the viewport height or
         // width are less than their original values
-        if (viewportHeight < originalHeight || viewportWidth < originalWidth) {
-            scaleHeight = viewportHeight / originalHeight;
-            scaleWidth = viewportWidth / originalWidth;
+        if (viewportHeight < ORIGINAL_HEIGHT || viewportWidth < ORIGINAL_WIDTH) {
+            scaleHeight = viewportHeight / ORIGINAL_HEIGHT;
+            scaleWidth = viewportWidth / ORIGINAL_WIDTH;
             if (scaleHeight < scaleWidth) {
                 scaleFactor = scaleHeight;
             } else {
                 scaleFactor = scaleWidth;
             }
-            canvasHeight = originalHeight * scaleFactor;
-            canvasWidth = originalWidth * scaleFactor;
+            canvasHeight = ORIGINAL_HEIGHT * scaleFactor;
+            canvasWidth = ORIGINAL_WIDTH * scaleFactor;
         } else {
             // If nothing changes, keep everything unchanged
             scaleFactor = 1;
-            canvasHeight = originalHeight;
-            canvasWidth = originalWidth;
+            canvasHeight = ORIGINAL_HEIGHT;
+            canvasWidth = ORIGINAL_WIDTH;
         }
 
         return [canvasWidth, canvasHeight, scaleFactor];
@@ -664,10 +664,10 @@ var Engine = (function(global) {
         canvas.height = calculateCanvasSize()[1];
         scaleFactor = calculateCanvasSize()[2];
         // Use scaleFactor here
-        startTextInitialX = textLeftX * canvas.width;
-        startTextInitialY = textUpperY * canvas.height;
-        startTextFinishingX = textRightX * canvas.width;
-        startTextFinishingY = textBottomY * canvas.height;
+        startTextInitialX = TEXT_LEFT_X * canvas.width;
+        startTextInitialY = TEXT_UPPER_Y * canvas.height;
+        startTextFinishingX = TEXT_RIGHT_X * canvas.width;
+        startTextFinishingY = TEXT_BOTTOM_Y * canvas.height;
         // Scale everything according to the new viewport size
         scaleDown();
 

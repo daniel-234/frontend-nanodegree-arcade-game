@@ -11,9 +11,9 @@ var gemsYCoordinate = [180, 263];
 // Array that holds the colors of the gems that it is possible to collect
 var availableGems = ['blue', 'green', 'orange'];
 // Variable that defines the percentage at which heart size will be considered in game
-var heartImageReduction = 0.6;
+var HEART_IMAGE_REDUCTION = 0.6;
 // Variable that defines the percentage at which key size will be considered in game
-var keyImageReduction = 0.6;
+var KEY_IMAGE_REDUCTION = 0.6;
 
 
 /* Enemies our player must avoid.
@@ -368,7 +368,7 @@ Rock.prototype.render = function() {
 
 /* Heart class with x and y coordinates and the offsets and effective size
  * of the visible image inside the sprite.
- * Variable 'heartImageReduction' is used to adapt the heart image in the game. Its
+ * Variable 'HEART_IMAGE_REDUCTION' is used to adapt the heart image in the game. Its
  * size was too big to fit properly and it was thus reduced. Reduction affected not
  * only the rendering, but also all the variables related to the image visible inside
  * the sprite, to implement the visual effect of collision properly.
@@ -378,14 +378,14 @@ var Heart = function() {
     this.x = 323 * scaleFactor;
     this.y = 25 * scaleFactor;
     // Offset of the effective image from the x position, necessary to detect collision
-    this.xOffset = 4 * heartImageReduction * scaleFactor;
+    this.xOffset = 4 * HEART_IMAGE_REDUCTION * scaleFactor;
     // Offset of the effective image from the y position, necessary to detect collision
-    this.yOffset = 57 * heartImageReduction * scaleFactor;
+    this.yOffset = 57 * HEART_IMAGE_REDUCTION * scaleFactor;
     // Effective width of the image, necessary to detect collision
-    this.effectiveWidth = 93 * heartImageReduction * scaleFactor;
+    this.effectiveWidth = 93 * HEART_IMAGE_REDUCTION * scaleFactor;
     // Effective height of the image, necessary to detect collision
-    this.effectiveHeight = 57 * heartImageReduction * scaleFactor;
-    this.theHeight = 56 * heartImageReduction * scaleFactor;
+    this.effectiveHeight = 57 * HEART_IMAGE_REDUCTION * scaleFactor;
+    this.theHeight = 56 * HEART_IMAGE_REDUCTION * scaleFactor;
     this.sprite = 'images/Heart.png';
 }
 
@@ -394,13 +394,13 @@ var Heart = function() {
  */
 Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
-        Resources.get(this.sprite).naturalWidth * heartImageReduction * scaleFactor,
-        Resources.get(this.sprite).naturalHeight * heartImageReduction * scaleFactor);
+        Resources.get(this.sprite).naturalWidth * HEART_IMAGE_REDUCTION * scaleFactor,
+        Resources.get(this.sprite).naturalHeight * HEART_IMAGE_REDUCTION * scaleFactor);
 };
 
 /* Key class with x and y coordinates and the offsets and effective size of the visible
  * image inside the sprite.
- * Variable 'heartImageReduction' is used to adapt the heart image in the game. Its
+ * Variable 'KEY_IMAGE_REDUCTION' is used to adapt the heart image in the game. Its
  * size was too big to fit properly and it was thus reduced. Reduction affected not
  * only the rendering, but also all the variables related to the image visible inside
  * the sprite, to implement the visual effect of collision properly.
@@ -410,13 +410,13 @@ var Key = function() {
     this.x = 123 * scaleFactor;
     this.y = 25 * scaleFactor;
     // Offset of the effective image from the x position, necessary to detect collision
-    this.xOffset = 22 * keyImageReduction * scaleFactor;
+    this.xOffset = 22 * KEY_IMAGE_REDUCTION * scaleFactor;
     // Offset of the effective image from the y position, necessary to detect collision
-    this.yOffset = 60 * keyImageReduction * scaleFactor;
+    this.yOffset = 60 * KEY_IMAGE_REDUCTION * scaleFactor;
     // Effective width of the image, necessary to detect collision
-    this.effectiveWidth = 60 * keyImageReduction * scaleFactor;
+    this.effectiveWidth = 60 * KEY_IMAGE_REDUCTION * scaleFactor;
     // Effective height of the image, necessary to detect collision
-    this.effectiveHeight = 70 * keyImageReduction * scaleFactor;
+    this.effectiveHeight = 70 * KEY_IMAGE_REDUCTION * scaleFactor;
     this.sprite = 'images/Key.png';
 };
 
@@ -425,8 +425,8 @@ var Key = function() {
  */
 Key.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y,
-        Resources.get(this.sprite).naturalWidth * keyImageReduction * scaleFactor,
-        Resources.get(this.sprite).naturalHeight * keyImageReduction * scaleFactor);
+        Resources.get(this.sprite).naturalWidth * KEY_IMAGE_REDUCTION * scaleFactor,
+        Resources.get(this.sprite).naturalHeight * KEY_IMAGE_REDUCTION * scaleFactor);
 };
 
 /* Check that the number of items in the array is equal to the given number num.
