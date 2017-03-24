@@ -7,7 +7,7 @@ For detailed instructions on how to get started, check out this [guide](https://
 
 ## Getting Started
 
-To play the game, fork the repository or clone or download it to your local machine and open the file index.html with your browser.
+To play the game, fork the repository or clone or download it to your local machine and open the file index.html with your browser. Alternatively, you can load it online from this [GitHub Pages project repository](https://daniel-234.github.io/frontend-nanodegree-arcade-game/).
 
 You can play the game in your personal computer or in any mobile device of your choice. You can interact with the player using your keyboard arrows, a mouse or touching the screen of a touch enabled device.
 The purpose of the game is for the player to reach the water, that can be found in the second stage. To reach that stage, the player must collect a key found in the first stage, trying to avoid the bugs that cross its path.
